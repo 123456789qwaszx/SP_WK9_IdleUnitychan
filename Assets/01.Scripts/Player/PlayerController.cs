@@ -5,27 +5,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Animator anim;
+    public Animator anim;
     CharacterController controller;
 
     public float _moveSpeed;
     public float _jumpPower;
-    public float _rotationSensitivety = 500f;
-
-    private float cur_wait_run_ratio;
+    public float _rotationSensitivety = 1300f;
 
 
     public bool _isGrounded;
     public bool _readyToJump;
     public bool CanAct = true;
 
+    
     public float _gravity;
     public float _verticalSpeed;
 
     const float StickingGravityProportion = 0.3f;
     const float JumpAbortSpeed = 1f;
 
-    readonly int p_HashAirborneVerticalSpeed = Animator.StringToHash("AirborneVerticalSpeed");
+    readonly int _HashAirborneVerticalSpeed = Animator.StringToHash("VerticalSpeed");
+
 
 
     void Awake()
@@ -47,8 +47,10 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
 
+        
         if (!_isGrounded)
-            anim.SetFloat(p_HashAirborneVerticalSpeed, (_verticalSpeed));
+            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed);
+
     }
 
 
@@ -59,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
         _moveSpeed = Mathf.Abs(dir.y) + Mathf.Abs(dir.x);
         anim.speed = 1.5f;
-        
+
 
         if (dir.y > 0.1)
         {
@@ -83,8 +85,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            controller.Move(moveDir * Time.deltaTime * Mathf.Lerp(_moveSpeed, 0, 60.0f * Time.deltaTime));
+            controller.Move(moveDir * Time.deltaTime * Mathf.Lerp(_moveSpeed, 0.01f, 120.0f * Time.deltaTime));
 
+            anim.SetFloat("Speed", Mathf.Lerp(Mathf.Abs(dir.y), 0.01f, 3.0f * Time.deltaTime));
+        }
+
+        if (moveDir == Vector3.zero)
+        {
             anim.SetFloat("Speed", Mathf.Lerp(Mathf.Abs(dir.y), 0, 3.0f * Time.deltaTime));
         }
 
@@ -107,10 +114,9 @@ public class PlayerController : MonoBehaviour
                 _verticalSpeed = _jumpPower;
                 _isGrounded = false;
                 _readyToJump = false;
-
-                //_animator.Play("JUMP_2STRETCH");
             }
         }
+        
         else
         {
             if (!GameManager.Instance.JumpInput && _verticalSpeed > 0.0f)
@@ -129,9 +135,7 @@ public class PlayerController : MonoBehaviour
 
             controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
         }
-
         //다시 점프 뛸 준비
         _isGrounded = controller.isGrounded;
     }
-
 }

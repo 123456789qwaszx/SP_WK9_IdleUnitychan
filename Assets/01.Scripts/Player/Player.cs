@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    PlayerController controller;
-    PlayerCondition condition;
-    PlayerBehaviour behaviour;
+    public PlayerController controller;
+    public PlayerCondition condition;
+    public PlayerBehaviour behaviour;
 
     void Awake()
     {
