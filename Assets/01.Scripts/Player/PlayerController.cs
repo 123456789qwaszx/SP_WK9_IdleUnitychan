@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public float _moveSpeed;
     public float _jumpPower;
-    public float _rotationSensitivety = 100f;
+    public float _rotationSensitivety = 500f;
 
     private float cur_wait_run_ratio;
 
@@ -27,10 +27,16 @@ public class PlayerController : MonoBehaviour
 
     readonly int p_HashAirborneVerticalSpeed = Animator.StringToHash("AirborneVerticalSpeed");
 
+
     void Awake()
     {
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+    }
+
+    void Start()
+    {
+
     }
 
     void FixedUpdate()
@@ -49,28 +55,39 @@ public class PlayerController : MonoBehaviour
     public void Move()
     {
         Vector3 dir = GameManager.Instance.MouseDir;
-        Vector3 moveDir = new Vector3(dir.x, 0, dir.y);
-        moveDir = (Quaternion.Euler(0, 45, 0) * moveDir).normalized;
+        Vector3 moveDir = new Vector3(dir.x, 0, dir.y).normalized;
 
-        if (moveDir != Vector3.zero)
+        _moveSpeed = Mathf.Abs(dir.y) + Mathf.Abs(dir.x);
+        anim.speed = 1.5f;
+        
+
+        if (dir.y > 0.1)
         {
-            // 좌표 이동
-            controller.Move(moveDir * Time.deltaTime * _moveSpeed);
+            controller.Move(moveDir * Time.deltaTime * _moveSpeed * 2.3f);
+
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
 
-            // 애니메이션 재생
-            cur_wait_run_ratio = Mathf.Lerp(cur_wait_run_ratio, 1, 10.0f * Time.deltaTime);
-            anim.SetFloat("wait_run_ratio", cur_wait_run_ratio);
-            anim.Play("WAIT_RUN");
+            anim.SetFloat("Speed", dir.y);
+            anim.SetFloat("Direction", dir.x);
+        }
+        else if (dir.y < -0.1)
+        {
+            controller.Move(moveDir * Time.deltaTime * _moveSpeed * 2.3f);
+
+            Quaternion lookRotation = Quaternion.LookRotation(moveDir);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
+
+            anim.SetFloat("Speed", Mathf.Abs(dir.y));
+            anim.SetFloat("Direction", -dir.x);
         }
         else
         {
-            // 애니메이션 재생
-            cur_wait_run_ratio = Mathf.Lerp(cur_wait_run_ratio, 0, 3.0f * Time.deltaTime);
-            anim.SetFloat("wait_run_ratio", cur_wait_run_ratio);
-            anim.Play("WAIT_RUN");
+            controller.Move(moveDir * Time.deltaTime * Mathf.Lerp(_moveSpeed, 0, 60.0f * Time.deltaTime));
+
+            anim.SetFloat("Speed", Mathf.Lerp(Mathf.Abs(dir.y), 0, 3.0f * Time.deltaTime));
         }
+
     }
 
 
