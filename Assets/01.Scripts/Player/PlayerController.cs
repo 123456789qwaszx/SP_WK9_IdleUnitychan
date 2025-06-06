@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     const float JumpAbortSpeed = 1f;
 
     readonly int _HashAirborneVerticalSpeed = Animator.StringToHash("VerticalSpeed");
+    readonly int _HashMoveSpeed = Animator.StringToHash("Speed");
+    readonly int _HashMoveDirection = Animator.StringToHash("Direction");
+    readonly int _HashISGrounded = Animator.StringToHash("Grounded");
 
 
 
@@ -69,8 +72,8 @@ public class PlayerController : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
 
-            anim.SetFloat("Speed", dir.y);
-            anim.SetFloat("Direction", dir.x);
+            anim.SetFloat(_HashMoveSpeed, dir.y);
+            anim.SetFloat(_HashMoveDirection, dir.x);
         }
         else if (dir.y < -0.1)
         {
@@ -79,19 +82,19 @@ public class PlayerController : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
 
-            anim.SetFloat("Speed", Mathf.Abs(dir.y));
-            anim.SetFloat("Direction", -dir.x);
+            anim.SetFloat(_HashMoveSpeed, Mathf.Abs(dir.y));
+            anim.SetFloat(_HashMoveDirection, -dir.x);
         }
         else
         {
             controller.Move(moveDir * Time.deltaTime * Mathf.Lerp(_moveSpeed, 0.01f, 120.0f * Time.deltaTime));
 
-            anim.SetFloat("Speed", Mathf.Lerp(Mathf.Abs(dir.y), 0.01f, 3.0f * Time.deltaTime));
+            anim.SetFloat(_HashMoveSpeed, Mathf.Lerp(Mathf.Abs(dir.y), 0.01f, 3.0f * Time.deltaTime));
         }
 
         if (moveDir == Vector3.zero)
         {
-            anim.SetFloat("Speed", Mathf.Lerp(Mathf.Abs(dir.y), 0, 3.0f * Time.deltaTime));
+            anim.SetFloat(_HashMoveSpeed, Mathf.Lerp(Mathf.Abs(dir.y), 0, 3.0f * Time.deltaTime));
         }
 
     }
@@ -113,7 +116,7 @@ public class PlayerController : MonoBehaviour
                 _verticalSpeed = _jumpPower;
                 _isGrounded = false;
                 _readyToJump = false;
-                anim.SetBool("Grounded", false);
+                anim.SetBool(_HashISGrounded, false);
             }
         }
 
@@ -143,7 +146,7 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
         {
             _isGrounded = true;
-            anim.SetBool("Grounded", true);
+            anim.SetBool(_HashISGrounded, true);
         }
     }
 }

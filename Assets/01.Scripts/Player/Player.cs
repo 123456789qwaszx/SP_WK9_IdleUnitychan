@@ -6,13 +6,13 @@ public class Player : MonoBehaviour
 {
     PlayerController controller;
     public PlayerCondition condition;
-    public PlayerBehaviour behaviour;
+    public PlayerBehavior behaviour;
 
     void Awake()
     {
         Managers.Char.Player = this;
         controller = GetComponent<PlayerController>();
         condition = GetComponent<PlayerCondition>();
-        behaviour = GetComponent<PlayerBehaviour>();
+        behaviour = GetComponent<PlayerBehavior>();
     }
 }
