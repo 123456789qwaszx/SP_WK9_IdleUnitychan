@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public interface IDamageable
+{
+   void TakeDamage(float damage);
+}
+
+public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator anim;
     CharacterController controller;
+    IDamageable idamagable;
 
     public float _moveSpeed;
     public float _jumpPower;
@@ -17,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public bool _readyToJump;
     public bool CanAct = true;
 
-    
+
     public float _gravity;
     public float _verticalSpeed;
 
@@ -34,6 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+        idamagable = GetComponent<IDamageable>();
     }
 
     void Start()
@@ -49,10 +56,15 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
 
-        
-        if (!_isGrounded)
-            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed/_jumpPower);
 
+        if (!_isGrounded)
+            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / _jumpPower);
+
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("공격당함");
     }
 
 
@@ -140,7 +152,7 @@ public class PlayerController : MonoBehaviour
                 _verticalSpeed = -_jumpPower;
             }
         }
-            controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
+        controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
         //다시 점프 뛸 준비
 
         if (controller.isGrounded)
