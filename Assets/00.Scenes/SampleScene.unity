@@ -9382,12 +9382,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   _moveSpeed: 5
-  _jumpPower: 15
+  _jumpPower: 5
   _rotationSensitivety: 100
   _isGrounded: 0
   _readyToJump: 0
   CanAct: 1
-  _gravity: 15
+  _gravity: 5
   _verticalSpeed: 0
 --- !u!143 &1726843782
 CharacterController:

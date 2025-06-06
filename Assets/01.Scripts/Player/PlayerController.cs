@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator anim;
+    Animator anim;
     CharacterController controller;
 
     public float _moveSpeed;
@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     public float _gravity;
     public float _verticalSpeed;
 
-    const float StickingGravityProportion = 0.3f;
     const float JumpAbortSpeed = 1f;
 
     readonly int _HashAirborneVerticalSpeed = Animator.StringToHash("VerticalSpeed");
@@ -49,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
         
         if (!_isGrounded)
-            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed);
+            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed/_jumpPower);
 
     }
 
@@ -59,7 +58,7 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = GameManager.Instance.MouseDir;
         Vector3 moveDir = new Vector3(dir.x, 0, dir.y).normalized;
 
-        _moveSpeed = Mathf.Abs(dir.y) + Mathf.Abs(dir.x);
+        _moveSpeed = Mathf.Abs(dir.y) + Mathf.Abs(dir.x) + Mathf.Abs(dir.z);
         anim.speed = 1.5f;
 
 
@@ -105,37 +104,46 @@ public class PlayerController : MonoBehaviour
         if (!GameManager.Instance.JumpInput && controller.isGrounded)
             _readyToJump = true;
 
-        if (_isGrounded && _readyToJump)
+        if (_isGrounded)
         {
-            _verticalSpeed = -_gravity * StickingGravityProportion;
+            _verticalSpeed = -_gravity;
 
             if (GameManager.Instance.JumpInput && _readyToJump)
             {
                 _verticalSpeed = _jumpPower;
                 _isGrounded = false;
                 _readyToJump = false;
+                anim.SetBool("Grounded", false);
             }
         }
-        
+
         else
         {
             if (!GameManager.Instance.JumpInput && _verticalSpeed > 0.0f)
             {
                 _verticalSpeed -= JumpAbortSpeed * Time.deltaTime;
 
-                //_animator.Play("JUMP_3OVERRAPPING");
             }
-            if (Mathf.Approximately(_verticalSpeed, 0f))
+            else if (Mathf.Approximately(_verticalSpeed, 0f))
             {
                 _verticalSpeed = 0f;
             }
+
             _verticalSpeed -= _gravity * Time.deltaTime;
-            //_animator.Play("JUMP_4FOLLOWTHROUGH");
 
 
-            controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
+            if (_verticalSpeed < -_jumpPower)
+            {
+                _verticalSpeed = -_jumpPower;
+            }
         }
+            controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
         //다시 점프 뛸 준비
-        _isGrounded = controller.isGrounded;
+
+        if (controller.isGrounded)
+        {
+            _isGrounded = true;
+            anim.SetBool("Grounded", true);
+        }
     }
 }
