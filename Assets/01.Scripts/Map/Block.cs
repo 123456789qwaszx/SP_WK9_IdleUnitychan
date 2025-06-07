@@ -14,9 +14,9 @@ public class Block
     public BlockType bType;
 
     public bool isSolid;
+    public Chunk owner;
     public GameObject parent;
     public Vector3 position;
-    public Material m;
 
     // 블럭에 따른 UV들
     Vector2[,] blockUVs =
@@ -26,19 +26,14 @@ public class Block
         /* DIRT */                              {new Vector2(0.2000f, 0.9875f)  , new Vector2(0.2125f, 0.9875f) , new Vector2(0.2000f, 1f)  , new Vector2(0.2125f, 1f)},
     };
 
-    public Block(BlockType b, Vector3 pos, GameObject p, Material cm)
+    public Block(BlockType b, Vector3 pos, GameObject p, Chunk o)
     {
-        m = cm;
         bType = b;
+        owner = o;
         parent = p;
         position = pos;
         if (bType == BlockType.AIR) isSolid = false;
         else isSolid = true;
-    }
-
-    private void Start()
-    {
-        Draw();
     }
 
     public void Draw()
@@ -145,8 +140,5 @@ public class Block
 
         MeshFilter meshFilter = quad.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;
-
-        MeshRenderer meshRenderer = quad.AddComponent<MeshRenderer>();
-        meshRenderer.material = m;
     }
 }

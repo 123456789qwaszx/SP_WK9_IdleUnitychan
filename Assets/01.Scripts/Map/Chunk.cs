@@ -2,49 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk : MonoBehaviour
+public class Chunk
 {
     public Material cube_material;
-    public Block[,,] chunk_data;
+    public Block[,,] chunkData;
     public GameObject chunk;
 
-    public void Start()
+    public Chunk(Vector3 position)
     {
+        chunk = new GameObject(World.BuildChunkName(position));
+        chunk.transform.position = position;
+        cube_material = World.ChunksObject.GetComponent<World>().cube_material;
         BuildChunk();
-        StartCoroutine(DrawChunk());
     }
 
-    // 청크의 값을 생성하는 함수
+
+    // 청크의 값을 생성하는 함수.
     void BuildChunk()
     {
-        chunk_data = new Block[8, 8, 8];
+        // ChunkSize의 사이즈로 초기화
+        chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
 
-        for (int z = 0; z < 8; z++)
+        // 3중 for문을 이용하여 3차원 좌표를 표현
+        for(int z = 0; z < World.chunkSize; z++)
         {
-            for (int x = 0; x < 8; x++)
+            for(int x = 0; x < World.chunkSize; x++)
             {
-                for (int y = 0; y < 8; y++)
+                for(int y = 0; y < World.chunkSize; y++)
                 {
                     Vector3 pos = new Vector3(x, y, z);
-                    chunk_data[x, y, z] = new Block(Block.BlockType.DIRT, pos, this.gameObject, cube_material);
+                    // 위치가 0,0,0인 청크의 바닥만 GRASS로 생성
+                    if (pos.y == 0 && chunk.transform.position.y == 0 && chunk.transform.position == Vector3.zero)
+                    {
+                        chunkData[x, y, z] = new Block(Block.BlockType.GRASS, pos, chunk, this);
+                    } // 그 외의 모든 것은 AIR로 생성
+                    else chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos, chunk, this);
                 }
             }
         }
     }
 
     // 청크의 값을 기반으로 오브젝트를 그리는 함수
-    IEnumerator DrawChunk()
+    public void DrawChunk()
     {
         // 3중 for문을 이용하여 3차원 좌표를 표현
-        for (int z = 0; z < 8; z++)
+        for (int z = 0; z < World.chunkSize; z++)
         {
-            for (int x = 0; x < 8; x++)
+            for(int x = 0; x < World.chunkSize; x++)
             {
-                for (int y = 0; y < 8; y++)
+                for(int y = 0; y < World.chunkSize; y++)
                 {
                     // 각 블럭을 그리기
-                    chunk_data[x, y, z].Draw();
-                    yield return new WaitForSeconds(0.1f);
+                    chunkData[x, y, z].Draw();
                 }
             }
         }
