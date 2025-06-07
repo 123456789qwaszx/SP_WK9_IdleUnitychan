@@ -418,7 +418,7 @@ MonoBehaviour:
   _row: 3
   _column: 3
   _size: {x: 3, y: 0.5, z: 3}
-  tile: {fileID: 1342429309}
+  tile: {fileID: 0}
 --- !u!4 &258141975
 Transform:
   m_ObjectHideFlags: 0
