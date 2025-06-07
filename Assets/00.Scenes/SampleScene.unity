@@ -323,7 +323,6 @@ GameObject:
   - component: {fileID: 204031829}
   - component: {fileID: 204031832}
   - component: {fileID: 204031834}
-  - component: {fileID: 204031833}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: Untagged
@@ -373,21 +372,6 @@ MonoBehaviour:
   parent: {fileID: 0}
   position: {x: 0, y: 0, z: 0}
   m: {fileID: 2100000, guid: 2e2969ce8a7d4fd46b3e68cd3b5b93ca, type: 2}
---- !u!114 &204031833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204031828}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c04ba4b49d603488664ab2c589e0b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cubeMaterial: {fileID: 0}
-  chunk: {fileID: 0}
-  chunkSize: 8
 --- !u!114 &204031834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,7 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cubeMaterial: {fileID: 2100000, guid: 2e2969ce8a7d4fd46b3e68cd3b5b93ca, type: 2}
-  chunkSize: 8
+  chunkSize: 3
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -10197,7 +10181,7 @@ MonoBehaviour:
   _row: 3
   _column: 3
   _size: {x: 9, y: 0.5, z: 9}
-  tile: {fileID: 258141973}
+  tile: {fileID: 631141911}
 --- !u!4 &1877577568
 Transform:
   m_ObjectHideFlags: 0

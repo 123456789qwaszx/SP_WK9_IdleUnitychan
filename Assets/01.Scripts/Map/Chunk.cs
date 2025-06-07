@@ -7,7 +7,7 @@ public class Chunk : MonoBehaviour
 {
     public Material _cubeMaterial;
     public Block[,,] _chunkData;
-    public  int chunkSize = 8;
+    public  int chunkSize;
     
 
     public void Start()
@@ -76,12 +76,10 @@ public class Chunk : MonoBehaviour
         //1. 모든 자식 메쉬 결합
         MeshFilter[] meshFilters = chunk.GetComponentsInChildren<MeshFilter>();
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-        int i = 0;
-        while (i < meshFilters.Length)
+        for (int i = 0; i < meshFilters.Length; i++)
         {
             combine[i].mesh = meshFilters[i].sharedMesh;
             combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-            i++;
         }
 
         MeshFilter meshFilter = chunk.gameObject.GetComponent<MeshFilter>();
@@ -101,17 +99,17 @@ public class Chunk : MonoBehaviour
         }
         else
         {
-            //3. 자식 오브젝트의 결합된 Mesh를 부모 오브젝트의 Mesh로 추가
-            meshFilter.mesh.Clear();
-            meshFilter.mesh = new Mesh();
-            meshFilter.mesh.CombineMeshes(combine);
+            ////3. 자식 오브젝트의 결합된 Mesh를 부모 오브젝트의 Mesh로 추가
+            // meshFilter.mesh.Clear();
+            // meshFilter.mesh = new Mesh();
+            // meshFilter.mesh.CombineMeshes(combine);
         }
 
         //5. 결합되지 않은 모든 하위 항목 삭제
-        foreach (Transform quad in chunk.transform)
-        {
-            GameObject.Destroy(quad.gameObject);
-        }
+        // foreach (Transform quad in chunk.transform)
+        // {
+        //     GameObject.Destroy(quad.gameObject);
+        // }
 
         return;
     }
