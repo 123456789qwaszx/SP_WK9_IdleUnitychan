@@ -26,12 +26,17 @@ public class PileBase : MonoBehaviour
 
     IEnumerator CoSpawnTile()
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 36; i++)
         {
             yield return new WaitForSeconds(0.1f);
 
             GameObject go = PoolManager.Instance.Pop(tile);
             AddToPile(go);
+            
+            int x = i % 6;
+            int y = i / 6;
+            
+            go.name = $"{y + "_" + x}";
         }
 
         // for (int i = 0; i < 20; i++)
@@ -43,6 +48,7 @@ public class PileBase : MonoBehaviour
         //     PoolManager.Instance.Push(tile);
         // }
     }
+
 
     public void AddToPile(GameObject go)
     {
