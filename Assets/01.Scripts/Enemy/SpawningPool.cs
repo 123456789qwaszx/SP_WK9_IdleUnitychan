@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class SpawningPool : MonoBehaviour
 {
-    public Transform _resourceRoot;
-
     [SerializeField]
     private NPC _bear;
-
 
     [Header("Bear")]
     [SerializeField]
@@ -26,20 +23,17 @@ public class SpawningPool : MonoBehaviour
     {
         while (_reserveCount + _bearCount < _keepBearCount)
         {
-            StartCoroutine(CoOBJresourceSpawn(_bear, _bearSpawnTime));
+            StartCoroutine(CoOBJresourceSpawn( _bearSpawnTime));
         }
     }
     
-    IEnumerator CoOBJresourceSpawn(NPC prefab, float spawnTime)
+    IEnumerator CoOBJresourceSpawn(float spawnTime)
     {
         _reserveCount++;
 
         yield return new WaitForSeconds(spawnTime);
-        NPC go = Instantiate(prefab);
+        GameObject go = GameManager.Instance.SpawnBear();
         _bearCount++;
-
-        go.name = prefab.name;
-        go.transform.parent = _resourceRoot;
 
         Vector3 randPos;
         Vector3 randDir = Random.insideUnitSphere * Random.Range(0, 50);

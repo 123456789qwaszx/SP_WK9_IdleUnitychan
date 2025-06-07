@@ -9633,6 +9633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpInput: 0
+  bear: {fileID: 991042992}
 --- !u!4 &1738491722
 Transform:
   m_ObjectHideFlags: 0
@@ -9783,7 +9784,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89ddc494ddea3146812087eb7acc836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceRoot: {fileID: 462885882}
   _bear: {fileID: 991042996}
   _bearCount: 0
   _keepBearCount: 2
