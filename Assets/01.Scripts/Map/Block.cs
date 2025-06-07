@@ -21,15 +21,14 @@ public class Block
     // 블럭에 따른 UV들
     Vector2[,] blockUVs =
     {
-        /* GRASS TOP */                         {new Vector2(0.2125f, 0.9875f)  , new Vector2(0.2250f, 0.9875f) , new Vector2(0.2125f, 1f)  , new Vector2(0.2250f, 1f)},
-        /* GRASS SIDE */                        {new Vector2(0.2250f, 0.9875f)  , new Vector2(0.2375f, 0.9875f) , new Vector2(0.2250f, 1f)  , new Vector2(0.2375f, 1f)},
-        /* DIRT */                              {new Vector2(0.2000f, 0.9875f)  , new Vector2(0.2125f, 0.9875f) , new Vector2(0.2000f, 1f)  , new Vector2(0.2125f, 1f)},
+        {new Vector2(0.2125f, 0.9875f)  , new Vector2(0.2250f, 0.9875f) , new Vector2(0.2125f, 1f)  , new Vector2(0.2250f, 1f)}, // GRASS TOP
+        {new Vector2(0.2250f, 0.9875f)  , new Vector2(0.2375f, 0.9875f) , new Vector2(0.2250f, 1f)  , new Vector2(0.2375f, 1f)}, // GRASS SIDE
+        {new Vector2(0.2000f, 0.9875f)  , new Vector2(0.2125f, 0.9875f) , new Vector2(0.2000f, 1f)  , new Vector2(0.2125f, 1f)}, // DIRT
     };
 
-    public Block(BlockType b, Vector3 pos, GameObject p, Chunk o)
+    public Block(BlockType b, Vector3 pos, GameObject p, Material m)
     {
         bType = b;
-        owner = o;
         parent = p;
         position = pos;
         if (bType == BlockType.AIR) isSolid = false;
@@ -39,87 +38,23 @@ public class Block
     // ChunkSize에 맞게 Local좌표를 계산하는 함수
     int ConvertBlockIndexToLocal(int i)
     {
-        if (i == -1) i = World.chunkSize - 1;
-        else if (i == World.chunkSize) i = 0;
+        if (i == -1) i = owner.chunkSize - 1;
+        else if (i == owner.chunkSize) i = 0;
         return i;
     }
 
 
-    // 1. 우선적으로 그려야 하는 해당 쿼드의 Local좌표가 다른 Chunk에 있는지 없는지 확인.
-    // 2. 만약 Local 좌표가 chunksize의 값보다 크거나 작다면(해당 청크의 Local좌표를 벗어난경우), 그에 맞는 해당블럭의 Chunk의 위치를 찾고,
-    // TryGetValue함수를 이용해 Chunk의 블럭 정보를 가져오는데, 해당 청크가 없다면 false를 반환.
-    // 3. try/catch를 이용해 그려야 하는 해당 블럭의 isSolid를 반환. (고체일 경우 true)
-    // 해당 블럭이 고체인지 판단하는 함수
-    public bool HasSolidNeighbour(int x, int y, int z)
-    {
-        Block[,,] chunks;
-
-        // ChunkSize를 벗어날 경우
-        if (x < 0 || x >= World.chunkSize || y < 0 || y >= World.chunkSize || z < 0 || z >= World.chunkSize)
-        {
-            // 해당 블럭에 맞는 다른 청크의 위치를 구함
-            Vector3 neightbourChunkPos = this.parent.transform.position + new Vector3((x - (int)position.x) * World.chunkSize,
-                (y - (int)position.y) * World.chunkSize, (z - (int)position.z) * World.chunkSize);
-
-            // 새로 구한 청크의 위치값을 이용해 청크의 이름을 구함
-            string nName = World.BuildChunkName(neightbourChunkPos);
-
-            // 새로운 청크에 맞는 로컬좌표 값 계산
-            x = ConvertBlockIndexToLocal(x);
-            y = ConvertBlockIndexToLocal(y);
-            z = ConvertBlockIndexToLocal(z);
-
-            Chunk nChunk;
-
-            // 값 계산으로 구한 청크의 이름으로 Chunk변수를 구함.
-            if (World.chunks.TryGetValue(nName, out nChunk))
-            {
-                // 해당 청크의 블럭 값을 대입
-                chunks = nChunk.chunkData;
-            }
-            else return false;
-        } // 아닐경우 기존 청크의 블럭 값을 대입
-        else chunks = owner.chunkData;
-
-        try
-        {
-            // 위치에 맞는 블럭의 고체 여부 확인
-            return chunks[x, y, z].isSolid;
-        }
-        catch (System.IndexOutOfRangeException ex) { Debug.Log(ex); }
-
-        return false;
-    }
-
-    // public void Draw()
-    // {
-    //     if (bType.Equals(BlockType.AIR)) return;
-
-    //     CreateQuad(Cubeside.BOTTOM);
-    //     CreateQuad(Cubeside.TOP);
-    //     CreateQuad(Cubeside.LEFT);
-    //     CreateQuad(Cubeside.RIGHT);
-    //     CreateQuad(Cubeside.FRONT);
-    //     CreateQuad(Cubeside.BACK);
-    // }
-
     public void Draw()
     {
+        
         if (bType.Equals(BlockType.AIR)) return;
-
-        // 해당 면의 옆 블럭이 고체가 아닐경우 Quad생성
-        if (!HasSolidNeighbour((int)position.x, (int)position.y, (int)position.z + 1))
-            CreateQuad(Cubeside.FRONT);
-        if (!HasSolidNeighbour((int)position.x, (int)position.y, (int)position.z - 1))
-            CreateQuad(Cubeside.BACK);
-        if (!HasSolidNeighbour((int)position.x, (int)position.y + 1, (int)position.z))
-            CreateQuad(Cubeside.TOP);
-        if (!HasSolidNeighbour((int)position.x, (int)position.y - 1, (int)position.z))
-            CreateQuad(Cubeside.BOTTOM);
-        if (!HasSolidNeighbour((int)position.x - 1, (int)position.y, (int)position.z))
-            CreateQuad(Cubeside.LEFT);
-        if (!HasSolidNeighbour((int)position.x + 1, (int)position.y, (int)position.z))
-            CreateQuad(Cubeside.RIGHT);
+        
+        CreateQuad(Cubeside.BOTTOM);
+        CreateQuad(Cubeside.TOP);
+        CreateQuad(Cubeside.LEFT);
+        CreateQuad(Cubeside.RIGHT);
+        CreateQuad(Cubeside.FRONT);
+        CreateQuad(Cubeside.BACK);
     }
 
     void CreateQuad(Cubeside side)
@@ -153,7 +88,8 @@ public class Block
             uv10 = blockUVs[0, 1];
             uv01 = blockUVs[0, 2];
             uv11 = blockUVs[0, 3];
-        } // BOTTOM을 그릴 경우
+        }
+        // BOTTOM을 그릴 경우
         else if (bType == BlockType.GRASS && side == Cubeside.BOTTOM)
         {
             uv00 = blockUVs[(int)(BlockType.DIRT), 0];

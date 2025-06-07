@@ -1,84 +1,75 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk
+public class Chunk : MonoBehaviour
 {
-    public Material cube_material;
-    public Block[,,] chunkData;
-    public GameObject chunk;
+    public Material _cubeMaterial;
+    public Block[,,] _chunkData;
+    public  int chunkSize = 8;
+    
 
-    public Chunk(Vector3 position)
+    public void Start()
     {
-        chunk = new GameObject(World.BuildChunkName(position));
-        chunk.transform.position = position;
-        cube_material = World.ChunksObject.GetComponent<World>().cube_material;
         BuildChunk();
+        DrawChunk();
     }
 
-
-    // 청크의 값을 생성하는 함수.
+    // 청크의 값을 생성하는 함수
     void BuildChunk()
     {
-        // ChunkSize의 사이즈로 초기화
-        chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
+        _chunkData = new Block[chunkSize, 1, chunkSize];
 
-        // 3중 for문을 이용하여 3차원 좌표를 표현
-        for(int z = 0; z < World.chunkSize; z++)
+        for (int z = 0; z < chunkSize; z++)
         {
-            for(int x = 0; x < World.chunkSize; x++)
+            for (int x = 0; x < chunkSize; x++)
             {
-                for(int y = 0; y < World.chunkSize; y++)
+                for (int y = 0; y < 1; y++)
                 {
                     Vector3 pos = new Vector3(x, y, z);
-                    // 위치가 0,0,0인 청크의 바닥만 GRASS로 생성
-                    if (pos.y == 0 && chunk.transform.position.y == 0 && chunk.transform.position == Vector3.zero)
-                    {
-                        chunkData[x, y, z] = new Block(Block.BlockType.GRASS, pos, chunk, this);
-                    } // 그 외의 모든 것은 AIR로 생성
-                    else chunkData[x, y, z] = new Block(Block.BlockType.AIR, pos, chunk, this);
+                    _chunkData[x, y, z] = new Block(Block.BlockType.DIRT, pos, gameObject, _cubeMaterial);
                 }
             }
         }
     }
 
-    // 청크의 값을 기반으로 오브젝트를 그리는 함수
-    public void DrawChunk()
+    void DrawChunk()
     {
         // 3중 for문을 이용하여 3차원 좌표를 표현
-        for (int z = 0; z < World.chunkSize; z++)
+        for (int z = 0; z < chunkSize; z++)
         {
-            for(int x = 0; x < World.chunkSize; x++)
+            for (int x = 0; x < chunkSize; x++)
             {
-                for(int y = 0; y < World.chunkSize; y++)
+                for (int y = 0; y < 1; y++)
                 {
                     // 각 블럭을 그리기
-                    chunkData[x, y, z].Draw();
+                    _chunkData[x, y, z].Draw();
                 }
             }
         }
 
         // 자식 오브젝트의 메쉬를 하나의 오브젝트로 합치기
-        CombineQuads(chunk, cube_material);
+        CombineQuads(gameObject, _cubeMaterial);
 
-        MeshCollider meshCollider = chunk.gameObject.GetComponent<MeshCollider>();
+        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
 
         // MeshCollider가 없을 경우
         if (meshCollider == null)
         {
             // MeshCollider컴포넌트 추가
-            meshCollider = chunk.AddComponent<MeshCollider>();
+            meshCollider = gameObject.AddComponent<MeshCollider>();
             // meshCollider의 Mesh에 MeshFilter의 Mesh 대입
-            meshCollider.sharedMesh = chunk.GetComponent<MeshFilter>().mesh;
+            meshCollider.sharedMesh = gameObject.GetComponent<MeshFilter>().mesh;
         } // 아닐경우
         else
         {
             // 변경한 Mesh의 맞게 MeshCollider 새로고침
-            meshCollider.sharedMesh = chunk.GetComponent<MeshFilter>().mesh;
+            meshCollider.sharedMesh = gameObject.GetComponent<MeshFilter>().mesh;
         }
     }
 
-
+    
     // 자식 오브젝트의 메쉬를 하나의 오브젝트로 합치는 함수
     public void CombineQuads(GameObject chunk, Material cube_material)
     {
