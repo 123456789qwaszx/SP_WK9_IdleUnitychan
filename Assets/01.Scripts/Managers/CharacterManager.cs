@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager
+public class CharacterManager : Singleton<CharacterManager>
 {
     // 시작 시 Player를 포함한 Char들에게서 직접 데이터를 받는다.
     // 외부에서 Char들의 정보를 받고 싶을때, Char들의 연결통로 역할

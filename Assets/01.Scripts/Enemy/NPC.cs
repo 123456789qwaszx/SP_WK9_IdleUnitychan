@@ -59,7 +59,7 @@ public class NPC : MonoBehaviour
 
     void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, Managers.Char.Player.transform.position);
+        playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.Player.transform.position);
         animator.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
@@ -150,7 +150,7 @@ public class NPC : MonoBehaviour
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                Managers.Char.Player.controller.GetComponent<IDamageable>().TakeDamage(damage);
+                CharacterManager.Instance.Player.controller.GetComponent<IDamageable>().TakeDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
             }
@@ -161,9 +161,9 @@ public class NPC : MonoBehaviour
             {
                 agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
-                if (agent.CalculatePath(Managers.Char.Player.transform.position, path))
+                if (agent.CalculatePath(CharacterManager.Instance.Player.transform.position, path))
                 {
-                    agent.SetDestination(Managers.Char.Player.transform.position);
+                    agent.SetDestination(CharacterManager.Instance.Player.transform.position);
                 }
                 else
                 {
@@ -185,7 +185,7 @@ public class NPC : MonoBehaviour
 
     bool IsPlayerInFieldOfView()
     {
-        Vector3 directionToPlayer = Managers.Char.Player.transform.position - transform.position;
+        Vector3 directionToPlayer = CharacterManager.Instance.Player.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
         return angle < fieldOfView * 0.5f;

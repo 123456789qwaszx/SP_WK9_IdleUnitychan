@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
+#region Pool
 internal class Pool
 {
     private GameObject _prefab;
@@ -29,16 +30,16 @@ internal class Pool
         _pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy);
     }
 
-	public void Push(GameObject go)
-	{
-		if (go.activeSelf)
-			_pool.Release(go);
-	}
+    public void Push(GameObject go)
+    {
+        if (go.activeSelf)
+            _pool.Release(go);
+    }
 
-	public GameObject Pop()
-	{
-		return _pool.Get();
-	}
+    public GameObject Pop()
+    {
+        return _pool.Get();
+    }
 
 
 
@@ -65,6 +66,7 @@ internal class Pool
         GameObject.Destroy(go);
     }
 }
+#endregion
 
 public class PoolManager : Singleton<PoolManager>
 {
@@ -97,6 +99,4 @@ public class PoolManager : Singleton<PoolManager>
     {
         _pools.Clear();
     }
-
-
 }
