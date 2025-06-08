@@ -69,8 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9b2d61b40a83346a71d46bf8c32072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interaction: {fileID: 0}
-  _data: {fileID: 0}
+  interaction: {fileID: 4204024144689267941}
+  _data: {fileID: 11400000, guid: 2712ee5a69a78484bab232d4831f4285, type: 2}
   capacity: 1
   hitCount: 0
 --- !u!1 &1631499024639012766

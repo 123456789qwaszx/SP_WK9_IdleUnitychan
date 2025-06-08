@@ -6,19 +6,22 @@ using UnityEngine;
 public enum ResourceType
 {
     None,
-    metalOre,
-    rockOre,
     tree,
-    mushroom
+    stoneOre,
+    metalOre,
+    mushroom,
+    fish
 }
 
 [Serializable]
-public class ItemDataResourceHp
+public class ResourceHp
 {
     public ResourceType type;
     public int value;
 }
 
+
+[CreateAssetMenu(fileName = "Resource", menuName = "New Resource")]
 public class ResourceData : ScriptableObject
 {
     [Header("Info")]
@@ -35,5 +38,5 @@ public class ResourceData : ScriptableObject
 
 
     [Header("Resource")]
-    public ItemDataResourceHp[] resources;
+    public ResourceHp[] resources;
 }

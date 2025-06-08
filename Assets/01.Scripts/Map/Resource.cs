@@ -25,7 +25,7 @@ public class Resource : MonoBehaviour, IDamageable
                 case ResourceType.tree:
                     capacity = 3;
                     break;
-                case ResourceType.rockOre:
+                case ResourceType.stoneOre:
                     capacity = 10;
                     break;
                 case ResourceType.metalOre:
@@ -77,7 +77,7 @@ public class Resource : MonoBehaviour, IDamageable
                 case ResourceType.tree:
                     //spawningPool._treeCount -= 1;
                     break;
-                case ResourceType.rockOre:
+                case ResourceType.stoneOre:
                     //spawningPool._rockCount -= 1;
                     break;
                 case ResourceType.metalOre:
