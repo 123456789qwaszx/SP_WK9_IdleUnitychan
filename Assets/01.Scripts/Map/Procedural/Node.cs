@@ -8,11 +8,37 @@ public class Node : MonoBehaviour
 
     public Transform[] nodes;
 
-    public ResourceType currentResoure;
+    public ResourceType currentResource;
 
     void Start()
     {
+        SpawnNodes();
+    }
 
+    private void SpawnNodes()
+    {
+        NodeManager nodeManager = new NodeManager(nodes);
+
+        currentResource = nodeManager.returnRandomResourceNode;
+
+        for (int i = 0; i < nodes.Length; i++)
+        {
+            Vector3 nodePos = nodes[nodeManager.randomNodeSelection].transform.position;
+
+            if (currentResource == ResourceType.metalOre || currentResource == ResourceType.stoneOre || currentResource == ResourceType.tree || currentResource == ResourceType.mushroom)
+            {
+                if (!nodeManager.doesResourceExist(nodePos))
+                {
+                    GameObject nodeSpawned = PoolManager.Instance.Pop(resourcePrefab);
+                    resourcePrefab.transform.position = nodePos;
+                    resourcePrefab.transform.rotation = Quaternion.identity;
+
+                    nodeManager.nodeDuplicateCheck.Add(nodeSpawned.transform.position, nodePos);
+
+                    //nodeSpawned.transform.SetParent(this.transform);
+                }
+            }
+        }
     }
 }
 
@@ -40,7 +66,7 @@ public class NodeManager
     {
         get
         {
-            return Random.Range(0, 100) % 50;
+            return Random.Range(0, 100);
         }
     }
 
@@ -53,13 +79,21 @@ public class NodeManager
     {
         get
         {
-            if (randomResourceSelection >= 20)
+            if (randomResourceSelection <= 20)
+            {
+                return ResourceType.tree;
+            }
+            else if  (randomResourceSelection > 20 && randomResourceSelection <= 50)
+            {
+                return ResourceType.stoneOre;
+            }
+            else if  (randomResourceSelection > 50 && randomResourceSelection <= 80)
             {
                 return ResourceType.metalOre;
             }
             else
             {
-                return ResourceType.rockOre;
+                return ResourceType.mushroom;
             }
         }
     }
