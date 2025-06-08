@@ -65,7 +65,6 @@ public class Block
         Vector2[] uvs = new Vector2[4];
         Vector3[] normals = new Vector3[4];
         Vector3[] vertices = new Vector3[4];
-        int[] triangles = new int[6];
 
         Vector2 uv00, uv10, uv01, uv11;
 
@@ -134,7 +133,7 @@ public class Block
         }
 
         uvs = new Vector2[] { uv11, uv01, uv00, uv10 };
-        triangles = new int[] { 3, 1, 0, 3, 2, 1 };
+        int[] triangles = new int[] { 3, 1, 0, 3, 2, 1 };
 
         mesh.vertices = vertices;
         mesh.normals = normals;
