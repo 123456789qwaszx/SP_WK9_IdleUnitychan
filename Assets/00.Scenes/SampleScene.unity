@@ -613,6 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockGameObject: {fileID: 631141911}
   objectToSpawn: {fileID: 847622917}
+  player: {fileID: 1719465996}
 --- !u!1 &391420764
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,7 +803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cubeMaterial: {fileID: 2100000, guid: 2e2969ce8a7d4fd46b3e68cd3b5b93ca, type: 2}
-  chunkSize: 6
+  chunkSize: 1
 --- !u!65 &631141915
 BoxCollider:
   m_ObjectHideFlags: 0

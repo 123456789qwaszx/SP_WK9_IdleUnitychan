@@ -8,6 +8,8 @@ public class GenerateGrid : MonoBehaviour
 
     public GameObject objectToSpawn;
 
+    public GameObject player;
+
     private int worldSizeX = 10;
 
     private int worldSizeZ = 10;
@@ -16,28 +18,76 @@ public class GenerateGrid : MonoBehaviour
 
     private float gridOffset = 1.1f;
 
+    private Vector3 startPosition;
+
+    private Hashtable blockContainer = new Hashtable();
+
     private List<Vector3> blockPositions = new List<Vector3>();
 
-    void Start()
+    void Update()
     {
-        for (int x = 0; x < worldSizeX; x++)
+        //블록 사이즈보다 많이 움직였을 경우.
+        if (Mathf.Abs(xPlayerMove) >= 1 || Mathf.Abs(zPlayerMove) >= 1)
         {
-            for (int z = 0; z < worldSizeZ; z++)
+            for (int x = -worldSizeX; x < worldSizeX; x++)
             {
-                Vector3 pos = new Vector3(x * gridOffset, generateNoise(x, z, 8f) * noiseHeight, z * gridOffset);
+                for (int z = -worldSizeZ; z < worldSizeZ; z++)
+                {
+                    Vector3 pos = new Vector3(x * 1 + xPlayerLocation, GenerateNoise(x + xPlayerLocation, z + zPlayerLocation, 8f) * noiseHeight, z * 1 + zPlayerLocation);
 
-                //GameObject block = Instantiate(blockGameObject, pos, Quaternion.identity) as GameObject;
-                GameObject block = PoolManager.Instance.Pop(blockGameObject);
-                block.transform.position = pos;
-                block.transform.rotation = Quaternion.identity;
+                    if (!blockContainer.ContainsKey(pos))
+                    {
+                        //GameObject block = Instantiate(blockGameObject, pos, Quaternion.identity) as GameObject;
+                        GameObject block = PoolManager.Instance.Pop(blockGameObject);
+                        block.transform.position = pos;
+                        block.transform.rotation = Quaternion.identity;
 
-                blockPositions.Add(block.transform.position);
+                        blockContainer.Add(pos, block);
 
-                //block.transform.SetParent(this.transform);
+                        blockPositions.Add(block.transform.position);
+
+                        //block.transform.SetParent(this.transform);
+
+                    }
+                }
             }
+            //SpawnObject();
         }
-        SpawnObject();
     }
+
+    private int xPlayerLocation
+    {
+        get
+        {
+            return (int)Mathf.Floor(player.transform.position.x);
+        }
+    }
+    private int zPlayerLocation
+    {
+        get
+        {
+            return (int)Mathf.Floor(player.transform.position.z);
+        }
+    }
+
+
+    private int xPlayerMove
+    {
+        get
+        {
+            return (int)(player.transform.position.x - startPosition.x);
+        }
+    }
+
+
+    private int zPlayerMove
+    {
+        get
+        {
+            return (int)(player.transform.position.z - startPosition.z);
+        }
+    }
+
 
     private void SpawnObject()
     {
@@ -45,7 +95,7 @@ public class GenerateGrid : MonoBehaviour
         {
             GameObject toPlaceObject = PoolManager.Instance.Pop(objectToSpawn);
             toPlaceObject.transform.position = ObjectSpawnLocation();
-            toPlaceObject.transform.rotation =  Quaternion.identity;
+            toPlaceObject.transform.rotation = Quaternion.identity;
 
         }
     }
@@ -64,7 +114,7 @@ public class GenerateGrid : MonoBehaviour
 
     }
 
-    private float generateNoise(int x, int z, float detailScale)
+    private float GenerateNoise(int x, int z, float detailScale)
     {
         float xNoise = (x + this.transform.position.x) / detailScale;
         float zNoise = (z + this.transform.position.y) / detailScale;
