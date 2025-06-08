@@ -690,7 +690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &356400141
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10670,7 +10670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b35ff7884693f33459ba6bf58a767ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 5
+  _moveSpeed: 1.7
   _jumpPower: 5
   _rotationSensitivety: 100
   _isGrounded: 0
