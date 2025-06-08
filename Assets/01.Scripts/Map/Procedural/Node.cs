@@ -33,7 +33,7 @@ public class Node : MonoBehaviour
                     resourcePrefab.transform.position = nodePos;
                     resourcePrefab.transform.rotation = Quaternion.identity;
 
-                    nodeManager.nodeDuplicateCheck.Add(nodeSpawned.transform.position, nodePos);
+                    nodeManager.nodeDuplicateCheck.Add($"{nodeSpawned.transform.position}", nodePos);
 
                     //nodeSpawned.transform.SetParent(this.transform);
                 }
@@ -46,7 +46,7 @@ public class NodeManager
 {
     private Transform[] nodes;
 
-    public Hashtable nodeDuplicateCheck = new Hashtable();
+    public Dictionary<string, Vector3> nodeDuplicateCheck = new Dictionary<string, Vector3>();
 
     public NodeManager(Transform[] node)
     {
@@ -72,7 +72,7 @@ public class NodeManager
 
     public bool doesResourceExist(Vector3 pos)
     {
-        return nodeDuplicateCheck.ContainsKey(pos);
+        return nodeDuplicateCheck.ContainsValue(pos);
     }
 
     public ResourceType returnRandomResourceNode
