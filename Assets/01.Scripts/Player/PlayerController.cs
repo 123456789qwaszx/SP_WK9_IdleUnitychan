@@ -8,15 +8,18 @@ public interface IDamageable
    void TakeDamage(float damage);
 }
 
+// Todo IDamagable 플레이어로 빼기.
+// 또 플레이어 애니메이션 Direction 값의 -1, +1이 현재 dir.y로만 조절되고 있는데,
+// dir.x조건도 추가할것.
 public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator anim;
     CharacterController controller;
     IDamageable idamagable;
 
-    public float _moveSpeed = 1.7f;
-    public float _jumpPower;
-    public float _rotationSensitivety = 1300f;
+    public float _moveSpeed = 1.9f;
+    public float _jumpPower = 5f;
+    public float _rotationSensitivety = 100f;
 
 
     public bool _isGrounded;
@@ -84,9 +87,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
 
             anim.SetFloat(_HashMoveSpeed, dir.y + Mathf.Abs(dir.x));
-            _curDirx = Mathf.Lerp(_curDirx, -1, Time.deltaTime * 0.5f);
+            _curDirx = Mathf.Lerp(_curDirx, 1, Time.deltaTime * 0.5f);
             anim.SetFloat(_HashMoveDirection, _curDirx);
-            Debug.Log(_curDirx);
         }
         else if (dir.y < -0.2)
         {
@@ -96,9 +98,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
 
             anim.SetFloat(_HashMoveSpeed, Mathf.Abs(dir.y) + Mathf.Abs(dir.x));
-            _curDirx = Mathf.Lerp(_curDirx, 1, Time.deltaTime * 0.5f);
+            _curDirx = Mathf.Lerp(_curDirx, -1, Time.deltaTime * 0.5f);
             anim.SetFloat(_HashMoveDirection, _curDirx);
-            Debug.Log(_curDirx);
         }
         else if (dir.y >= -0.2 && dir.y <= 0.2 && dir.y != 0)
         {
@@ -110,7 +111,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             anim.SetFloat(_HashMoveSpeed, Mathf.Abs(dir.y) + Mathf.Abs(dir.x));
             _curDirx = Mathf.Lerp(_curDirx, 0, Time.deltaTime * 0.5f);
             anim.SetFloat(_HashMoveDirection, _curDirx);
-            Debug.Log(_curDirx);
 
         }
 

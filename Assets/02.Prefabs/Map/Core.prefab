@@ -332,13 +332,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbbf50d2e49c4044b5cfc86dee98d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePrefab: {fileID: 0}
+  resourcePrefab: {fileID: 8267852024312202338, guid: c806f62ae8c8cef4cb9d83b336553a8e, type: 3}
   nodes:
   - {fileID: 7649408483340668501}
   - {fileID: 141467981429750626}
   - {fileID: 5406483857546160033}
   - {fileID: 3228685622654608690}
-  currentResoure: 0
+  currentResource: 0
 --- !u!1 &4954636545559341606
 GameObject:
   m_ObjectHideFlags: 0

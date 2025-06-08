@@ -77,17 +77,13 @@ uv11 = blockUVs[1, 1];
 
 uvs = new Vector2[] { uv11, uv01, uv00, uv10 };
 mesh.uv = uvs;
-
-
-    --- Optional Enhancers ---
-    ToDo: Implement noise smoothing (Theres a tutorial for this on my channel ;)
-    --------------------------
 */
+
 public class MeshGenerator : MonoBehaviour
 {
-    public int Worldx;
-    public int Worldz;
-        
+    public int Worldx = 10;
+    public int Worldz = 10;
+
     private Vector3[] vertices;
     private int[] triangles;
 
@@ -112,7 +108,6 @@ public class MeshGenerator : MonoBehaviour
         generateMesh();
     }
 
-    // Method that does our mesh stuff :)
     private void generateMesh()
     {
         Mesh mesh = new Mesh();
@@ -153,7 +148,6 @@ public class MeshGenerator : MonoBehaviour
             verts++;
         }
 
-
         mesh.vertices = vertices;
         mesh.triangles = triangles;
 
@@ -161,6 +155,5 @@ public class MeshGenerator : MonoBehaviour
 
         GetMeshFilter.mesh = mesh;
         GetMeshCollider.sharedMesh = mesh;
-
     }
 }

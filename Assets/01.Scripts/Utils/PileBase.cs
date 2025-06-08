@@ -26,7 +26,7 @@ public class PileBase : MonoBehaviour
 
     IEnumerator CoSpawnTile()
     {
-        for (int i = 0; i < 36; i++)
+        for (int i = 0; i < 9; i++)
         {
             yield return new WaitForSeconds(0.1f);
 
