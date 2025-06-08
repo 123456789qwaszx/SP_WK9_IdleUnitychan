@@ -127,7 +127,7 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= Worldx; x++)
             {
-                vertices[i] = new Vector3(x, Mathf.PerlinNoise(x * 2, z * .3f) / .3f, z);
+                vertices[i] = new Vector3(x, 0/*Mathf.PerlinNoise(x * 2, z * .3f) / .3f*/, z);
                 i++;
             }
         }
