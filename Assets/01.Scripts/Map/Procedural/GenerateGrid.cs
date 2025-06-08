@@ -24,6 +24,33 @@ public class GenerateGrid : MonoBehaviour
 
     private List<Vector3> blockPositions = new List<Vector3>();
 
+    void Start()
+    {
+        for (int x = -worldSizeX; x < worldSizeX; x++)
+        {
+            for (int z = -worldSizeZ; z < worldSizeZ; z++)
+            {
+                Vector3 pos = new Vector3(x * 1 + xPlayerLocation, GenerateNoise(x + xPlayerLocation, z + zPlayerLocation, 8f) * noiseHeight, z * 1 + zPlayerLocation);
+
+                if (!blockContainer.ContainsKey(pos))
+                {
+                    //GameObject block = Instantiate(blockGameObject, pos, Quaternion.identity) as GameObject;
+                    GameObject block = PoolManager.Instance.Pop(blockGameObject);
+                    block.transform.position = pos;
+                    block.transform.rotation = Quaternion.identity;
+
+                    blockContainer.Add(pos, block);
+
+                    blockPositions.Add(block.transform.position);
+
+                    //block.transform.SetParent(this.transform);
+
+                }
+            }
+        }
+        SpawnObject();
+    }
+
     void Update()
     {
         //블록 사이즈보다 많이 움직였을 경우.
@@ -51,7 +78,6 @@ public class GenerateGrid : MonoBehaviour
                     }
                 }
             }
-            //SpawnObject();
         }
     }
 
