@@ -78,4 +78,14 @@ class PriorityQueue<T> where T : IComparable<T>
     {
         return _heap.Count;
     }
+
+    public bool ContainsValue(T value)
+    {
+        if (_heap.Contains(value))
+        {
+            return true;
+        }
+        return false;
+        
+    }
 }
