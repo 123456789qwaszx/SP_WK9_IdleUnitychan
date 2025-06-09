@@ -4,10 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public interface IDamageable
-{
-   void TakeDamage(float damage);
-}
 
 public class PlayerBehavior : MonoBehaviour, IDamageable
 {
