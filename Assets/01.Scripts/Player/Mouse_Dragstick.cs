@@ -24,12 +24,18 @@ public class Mouse_Dragstick : MonoBehaviour
     private float _radius;
 
 
+    public float checkRate = 0.1f;
+    public float lastCheckTime;
+
     Texture2D _attackIcon;
     Texture2D _HandIcon;
     Texture2D _LootIcon;
+    public bool IsHandCursor;
 
     void Start()
     {
+        checkRate = 0.05f;
+
         _attackIcon = Resources.Load<Texture2D>("Cursor/Cursor_Attack");
         _LootIcon = Resources.Load<Texture2D>("Cursor/Cursor_Loot");
         _HandIcon = Resources.Load<Texture2D>("Cursor/Cursor_Hand");
@@ -42,7 +48,11 @@ public class Mouse_Dragstick : MonoBehaviour
 
     void Update()
     {
-        UpdateMouseCursor();
+        if (Time.time - lastCheckTime > checkRate)
+        {
+            lastCheckTime = Time.time;
+            UpdateMouseCursor();
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -81,37 +91,28 @@ public class Mouse_Dragstick : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f, _mask))
         {
-            Debug.Log(hit.collider.gameObject.name);
             if (hit.collider.gameObject.layer == (int)Layer.Monster)
             {
                 Cursor.SetCursor(_attackIcon, new Vector2(_attackIcon.width / 5, 0), CursorMode.Auto);
+                IsHandCursor = false;
             }
             else if (hit.collider.gameObject.layer == (int)Layer.Item)
             {
                 Cursor.SetCursor(_LootIcon, new Vector2(_LootIcon.width / 3, 0), CursorMode.Auto);
+                IsHandCursor = false;
             }
             else
             {
                 Cursor.SetCursor(_HandIcon, Vector2.zero, CursorMode.Auto);
             }
         }
+
+        if (!Physics.Raycast(ray, out hit, 100.0f, _mask) && (IsHandCursor == false))
+        {
+            Cursor.SetCursor(_HandIcon, Vector2.zero, CursorMode.Auto);
+            IsHandCursor = true;
+        }
     }
-
-    // Action에서 Input.GetKey(AnyKey) 이것의 정확한 작용을 모르니 에러가 자꾸 나는데...
-    // 아무튼 필요한 개념자체가 까다로운 건 아니야. 그냥 지하철역 외우듯이 알기만 하면 되는건데...
-
-    //1. GetMouseDown
-    //2. GetMouseDrag
-    //3. GetMouseUp
-    // 이렇게 세가지가 필요해.
-
-    // 저렇게 세가지 동작이 일어났을 때,
-    // 또 마우스 l,m,r 별로 다르게 설정해줘야 해.
-
-    // 이건 너무너무너무 귀찮은데?
-
-    // Vector2 _LClickPos;, Vector2 _RClickPos;, Vector2 _MClickPos;
-    // 이거 세 개 중에서, 좌클릭만 살리자.
 
     public void GetMouseDown()
     {
