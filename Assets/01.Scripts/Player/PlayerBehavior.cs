@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 
 public enum Layer
@@ -28,9 +29,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     IDamageable idamagable;
 
-
-    public PlayerState State;
-
+    public PlayerState _state;
 
     public float checkRate = 0.1f;
     public float lastCheckTime;
@@ -75,7 +74,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             UpdateMouseCursor();
         }
 
-        switch (State)
+        switch (_state)
         {
             case PlayerState.Die:
                 UpdateDie();
@@ -92,6 +91,49 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             case PlayerState.Skill:
                 UpdateSkill();
                 break;
+        }
+    }
+
+
+    public void OnLockOn(InputAction.CallbackContext context)
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool raycastHit = Physics.Raycast(ray, out hit, 100.0f, _mask);
+
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (raycastHit)
+            {
+                _destPos = hit.point;
+                _state = PlayerState.Moving;
+
+                if (Physics.Raycast(ray, out hit, 100.0f, _mask))
+                    _lockTarget = hit.collider.gameObject;
+                else
+                    _lockTarget = null;
+            }
+        }
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (_lockTarget != null)
+                _destPos = _lockTarget.transform.position;
+            else if(raycastHit)
+                _destPos = hit.point;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            _lockTarget = null;
+        }
+        
+    }
+
+
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+
         }
     }
 
@@ -123,7 +165,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         Vector3 dir = _destPos - transform.position;
         if (dir.magnitude < 0.1f)
         {
-            State = PlayerState.Idle;
+            _state = PlayerState.Idle;
         }
         else
         {
@@ -155,13 +197,11 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         if (Physics.Raycast(CharacterManager.Instance.Player.transform.position + Vector3.up * 0.5f, GameManager.Instance.MouseDir, 1.0f, LayerMask.GetMask("Wall")))
         {
             Debug.Log("StopAndJump");
-            State = PlayerState.Idle;
+            _state = PlayerState.Idle;
 
             GameManager.Instance.JumpInput = true;
-            Debug.Log("StopAndJump");
         }
     }
-
 
 
     void UpdateMouseCursor()
