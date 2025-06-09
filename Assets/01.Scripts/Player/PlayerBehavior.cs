@@ -19,7 +19,6 @@ public enum PlayerState
     Die,
     Idle,
     Moving,
-    attack,
     Skill,
 }
 
@@ -27,6 +26,7 @@ public enum PlayerState
 public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     IDamageable idamagable;
+    Animator anim;
 
     public PlayerState _state;
 
@@ -40,9 +40,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     float _attackLimit = 1;
 
 
-    void Awake()
+    void Start()
     {
         idamagable = GetComponent<IDamageable>();
+        anim = GetComponent<Animator>();
+
+        _attackLimit = 5;
     }
 
 
@@ -60,13 +63,18 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             case PlayerState.Moving:
                 UpdateMoving();
                 break;
-            case PlayerState.attack:
-                UpdateAttack();
-                break;
             case PlayerState.Skill:
                 UpdateSkill();
                 break;
         }
+    }
+
+    void OnHitEvent()
+    {
+        Debug.Log("OnHitEvent");
+        anim.SetBool("Attack", false);
+
+        _state = PlayerState.Idle;
     }
 
 
@@ -93,14 +101,14 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             if (_lockTarget != null)
                 _destPos = _lockTarget.transform.position;
-            else if(raycastHit)
+            else if (raycastHit)
                 _destPos = hit.point;
         }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            _lockTarget = null;
-        }
-        
+        // if (context.phase == InputActionPhase.Canceled)
+        // {
+        //     _lockTarget = null;
+        // }
+
     }
 
 
@@ -128,13 +136,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     void UpdateSkill()
     {
-
-    }
-
-
-    void UpdateAttack()
-    {
-
+        anim.SetBool("Attack", true);
     }
 
 
@@ -147,6 +149,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             if (distance <= _attackLimit)
             {
                 _canAttack = true;
+                _state = PlayerState.Skill;
+                anim.SetFloat("Speed", 1f);
+
             }
         }
 
@@ -168,7 +173,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     void UpdateIdle()
     {
-
     }
 
 
