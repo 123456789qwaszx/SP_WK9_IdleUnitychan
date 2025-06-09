@@ -35,15 +35,6 @@ public class Mouse_Dragstick : MonoBehaviour
         {
             GetMouseUp();
         }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            GameManager.Instance.JumpInput = true;
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            GameManager.Instance.JumpInput = false;
-        }
     }
 
 
