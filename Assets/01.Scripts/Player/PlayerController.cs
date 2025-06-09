@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Todo IDamagable 플레이어로 빼기.
 // 또 플레이어 애니메이션 Direction 값의 -1, +1이 현재 dir.y로만 조절되고 있는데,
 // dir.x조건도 추가할것.
 public class PlayerController : MonoBehaviour

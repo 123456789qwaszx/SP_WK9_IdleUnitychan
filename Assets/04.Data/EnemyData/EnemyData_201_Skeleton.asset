@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ea8604e26689c4f81eef56ce7e6896, type: 3}
+  m_Name: EnemyData_201_Skeleton
+  m_EditorClassIdentifier: 
+  displayName: "\uC2A4\uCF08\uB808\uD1A4"
+  enemytype: 0
+  monsterStat:
+  - type: 1
+    value: 15
+  - type: 2
+    value: 0
+  - type: 3
+    value: 100
+  - type: 4
+    value: 10

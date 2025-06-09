@@ -5,37 +5,145 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
+public enum Layer
+{
+    Ground = 6,
+    Monster = 7,
+    Wall = 8,
+    Item = 9
+}
+
+
+public enum PlayerState
+{
+    Die,
+    Idle,
+    Moving,
+    attack,
+    Skill,
+}
+
+
 public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     IDamageable idamagable;
+
+
+    public PlayerState State;
+
+
+    public float checkRate = 0.1f;
+    public float lastCheckTime;
+
+    int _mask = (1 << (int)Layer.Ground) | (1 << (int)Layer.Monster) | (1 << (int)Layer.Item);
+
+    Texture2D _attackIcon;
+    Texture2D _HandIcon;
+    Texture2D _LootIcon;
+    public bool IsHandCursor;
+
+
+    GameObject _lockTarget;
+    Vector3 _destPos;
+
+    bool _canAttack;
+    float _attackLimit = 1;
+
 
     void Awake()
     {
         idamagable = GetComponent<IDamageable>();
     }
 
+
     void Start()
     {
+        checkRate = 0.1f;
+
+        _attackIcon = Resources.Load<Texture2D>("Cursor/Cursor_Attack");
+        _LootIcon = Resources.Load<Texture2D>("Cursor/Cursor_Loot");
+        _HandIcon = Resources.Load<Texture2D>("Cursor/Cursor_Hand");
 
     }
+
 
     void Update()
     {
-        Stop();
+        if (Time.time - lastCheckTime > checkRate)
+        {
+            lastCheckTime = Time.time;
+            UpdateMouseCursor();
+        }
+
+        switch (State)
+        {
+            case PlayerState.Die:
+                UpdateDie();
+                break;
+            case PlayerState.Idle:
+                UpdateIdle();
+                break;
+            case PlayerState.Moving:
+                UpdateMoving();
+                break;
+            case PlayerState.attack:
+                UpdateAttack();
+                break;
+            case PlayerState.Skill:
+                UpdateSkill();
+                break;
+        }
     }
 
-    
-    public void TakeDamage(float damage)
+
+    void UpdateSkill()
     {
-        Debug.Log("공격당함");
+
     }
+
+
+    void UpdateAttack()
+    {
+
+    }
+
 
     void UpdateMoving()
     {
-        NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+        if (_lockTarget != null)
+        {
+            _destPos = _lockTarget.transform.position;
+            float distance = (_destPos - transform.position).magnitude;
+            if (distance <= _attackLimit)
+            {
+                _canAttack = true;
+            }
+        }
 
-        // nma.CalculatePath
-        // nma.Move() // 실제 크기까지 포함하는 방향벡터
+        Vector3 dir = _destPos - transform.position;
+        if (dir.magnitude < 0.1f)
+        {
+            State = PlayerState.Idle;
+        }
+        else
+        {
+            NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+            float moveDist = Mathf.Clamp(CharacterManager.Instance.Player.stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
+            nma.Move(dir.normalized * moveDist);
+        }
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+    }
+
+
+    void UpdateIdle()
+    {
+
+    }
+
+
+    void UpdateDie()
+    {
 
     }
 
@@ -47,9 +155,49 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         if (Physics.Raycast(CharacterManager.Instance.Player.transform.position + Vector3.up * 0.5f, GameManager.Instance.MouseDir, 1.0f, LayerMask.GetMask("Wall")))
         {
             Debug.Log("StopAndJump");
-        }
-        // Dir.y이다보니 위로 쏘는데, 그걸 z로 바꿔주는 작업이 필요.
+            State = PlayerState.Idle;
 
+            GameManager.Instance.JumpInput = true;
+            Debug.Log("StopAndJump");
+        }
+    }
+
+
+
+    void UpdateMouseCursor()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100.0f, _mask))
+        {
+            if (hit.collider.gameObject.layer == (int)Layer.Monster)
+            {
+                Cursor.SetCursor(_attackIcon, new Vector2(_attackIcon.width / 5, 0), CursorMode.Auto);
+                IsHandCursor = false;
+            }
+            else if (hit.collider.gameObject.layer == (int)Layer.Item)
+            {
+                Cursor.SetCursor(_LootIcon, new Vector2(_LootIcon.width / 3, 0), CursorMode.Auto);
+                IsHandCursor = false;
+            }
+            else
+            {
+                Cursor.SetCursor(_HandIcon, Vector2.zero, CursorMode.Auto);
+            }
+        }
+
+        if (!Physics.Raycast(ray, out hit, 100.0f, _mask) && (IsHandCursor == false))
+        {
+            Cursor.SetCursor(_HandIcon, Vector2.zero, CursorMode.Auto);
+            IsHandCursor = true;
+        }
+    }
+
+
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("공격당함");
     }
 }
 
