@@ -1,0 +1,75 @@
+{
+  "players": [
+    {
+      "id": 1001,
+      "name": "HeroKnight",
+      "level": 12,
+      "skills": [
+        {
+          "id": 1,
+          "name": "Fireball",
+          "damage": 100,
+          "effects": [
+            {
+              "type": "burn",
+              "duration": 5
+            },
+            {
+              "type": "stun",
+              "duration": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1002,
+      "name": "ShadowRogue",
+      "level": 9,
+      "skills": [
+        {
+          "id": 2,
+          "name": "Backstab",
+          "damage": 120,
+          "effects": [
+            {
+              "type": "bleed",
+              "duration": 6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": 201,
+      "name": "Health Potion",
+      "type": "consumable",
+      "effect": {
+        "type": "heal",
+        "value": 50
+      }
+    },
+    {
+      "id": 202,
+      "name": "Iron Sword",
+      "type": "weapon",
+      "damage": 25
+    }
+  ],
+  "monsters": [
+    {
+      "id": 301,
+      "name": "Slime",
+      "level": 3,
+      "hp": 100
+    },
+    {
+      "id": 302,
+      "name": "Goblin",
+      "level": 5,
+      "hp": 150
+    }
+  ]
+}

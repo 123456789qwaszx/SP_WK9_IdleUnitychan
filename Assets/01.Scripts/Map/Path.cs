@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Path
+public class Paths
 {
 
     private List<GameObject> path = new List<GameObject>();
@@ -23,7 +23,7 @@ public class Path
         return path;
     }
 
-    public Path(int radius)
+    public Paths(int radius)
     {
         this.radius = radius;
     }
