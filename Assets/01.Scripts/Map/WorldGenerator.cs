@@ -13,7 +13,7 @@ public class WorldGenerator : MonoBehaviour
 
     void Start()
     {
-        Path pathGenerator = new Path(radius);
+        Paths pathGenerator = new Paths(radius);
         for (int x = 0; x < radius; x++)
         {
             for (int z = -0; z < radius; z++)

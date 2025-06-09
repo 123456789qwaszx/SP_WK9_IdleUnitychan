@@ -6,64 +6,26 @@ using System.IO;
 using System.Linq;
 using System;
 
-public class Stat
+public interface ILoader<Key, Value>
 {
-    public int level;
-    public int hp;
-    public int attack;
+    Dictionary<Key, Value> MakeDict();
 }
-
-[Serializable]
-public class StatData
-{
-    public List<Stat> stats = new List<Stat>();
-}
-
 
 public class DataManager : Singleton<DataManager>
 {
-    public Dictionary<int, Stat> StatDict { get; private set; } = new Dictionary<int, Stat>();
+    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
 
 
 
     public void Init()
     {
-        TextAsset textAsset = Resources.Load<TextAsset>($"Data/StatData");
-        StatData data = JsonUtility.FromJson<StatData>(textAsset.text);
-
-        foreach (Stat stat in data.stats)
-            StatDict.Add(stat.level, stat);
+        StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
     }
 
-
-    // string path = Path.Combine(Application.streamingAssetsPath, "TestStatData.json");
-
-    // void Start()
-    // {
-    //     Show1();
-    // }
-
-    // void Show1()
-    // {
-    //     string json = File.ReadAllText(path);
-    //     Debug.Log(json);
-    //     JToken root = JToken.Parse(json);
-
-    //     JToken players = root["players"];
-
-
-    //     for (int i = 0; i < players.Count(); i++)
-    //     {
-    //         Debug.Log($"{players[i]["id"]} 이 플레이어 번호고" + $"이름은 {players[i]["name"]}");
-    //         JToken skills = players[i]["skills"];
-
-    //         for (int j = 0; j < skills.Count(); j++)
-    //         {
-    //             JToken skill = skills[j];
-    //             Debug.Log($"{skill["damage"]}");
-    //         }
-    //     }
-
-    //     Debug.Log($"{players[0]["skills"][0]["effects"][1]["duration"]}");
-    // }
+    // 키와 밸류를 가지고 있는 ILoader를 반드시 들고있어야 한다는 의미.
+    Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+    {
+        TextAsset textAsset = Resources.Load<TextAsset>($"Data/{path}");
+        return JsonUtility.FromJson<Loader>(textAsset.text);
+    }
 }
