@@ -3,24 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamageable
-{
-   void TakeDamage(float damage);
-}
-
 // Todo IDamagable 플레이어로 빼기.
 // 또 플레이어 애니메이션 Direction 값의 -1, +1이 현재 dir.y로만 조절되고 있는데,
 // dir.x조건도 추가할것.
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
     Animator anim;
     CharacterController controller;
-    IDamageable idamagable;
-
-    public float _moveSpeed = 1.9f;
-    public float _jumpPower = 5f;
-    public float _rotationSensitivety = 100f;
-
 
     public bool _isGrounded;
     public bool _readyToJump;
@@ -39,17 +28,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     readonly int _HashISGrounded = Animator.StringToHash("Grounded");
 
 
-
     void Awake()
     {
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
-        idamagable = GetComponent<IDamageable>();
-    }
-
-    void Start()
-    {
-
     }
 
     void FixedUpdate()
@@ -60,15 +42,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         Move();
         Jump();
 
-
         if (!_isGrounded)
-            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / _jumpPower);
-
-    }
-
-    public void TakeDamage(float damage)
-    {
-        Debug.Log("공격당함");
+            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
     }
 
 
@@ -81,10 +56,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (dir.y > 0.2)
         {
-            controller.Move(moveDir * Time.deltaTime * _moveSpeed * 2.3f);
+            controller.Move(moveDir * Time.deltaTime * CharacterManager.Instance.Player.stat.MoveSpeed * 2.3f);
 
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * CharacterManager.Instance.Player.stat.RotationSensitivity);
 
             anim.SetFloat(_HashMoveSpeed, dir.y + Mathf.Abs(dir.x));
             _curDirx = Mathf.Lerp(_curDirx, 1, Time.deltaTime * 0.5f);
@@ -92,10 +67,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (dir.y < -0.2)
         {
-            controller.Move(moveDir * Time.deltaTime * _moveSpeed * 2.3f);
+            controller.Move(moveDir * Time.deltaTime * CharacterManager.Instance.Player.stat.MoveSpeed * 2.3f);
 
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * CharacterManager.Instance.Player.stat.RotationSensitivity);
 
             anim.SetFloat(_HashMoveSpeed, Mathf.Abs(dir.y) + Mathf.Abs(dir.x));
             _curDirx = Mathf.Lerp(_curDirx, -1, Time.deltaTime * 0.5f);
@@ -103,10 +78,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if (dir.y >= -0.2 && dir.y <= 0.2 && dir.y != 0)
         {
-            controller.Move(moveDir * Time.deltaTime * _moveSpeed * 1.7f);
+            controller.Move(moveDir * Time.deltaTime * CharacterManager.Instance.Player.stat.MoveSpeed * 1.7f);
 
             Quaternion lookRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * _rotationSensitivety);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * CharacterManager.Instance.Player.stat.RotationSensitivity);
 
             anim.SetFloat(_HashMoveSpeed, Mathf.Abs(dir.y) + Mathf.Abs(dir.x));
             _curDirx = Mathf.Lerp(_curDirx, 0, Time.deltaTime * 0.5f);
@@ -135,7 +110,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             if (GameManager.Instance.JumpInput && _readyToJump)
             {
-                _verticalSpeed = _jumpPower;
+                _verticalSpeed = CharacterManager.Instance.Player.stat.JumpPower;
                 _isGrounded = false;
                 _readyToJump = false;
                 anim.SetBool(_HashISGrounded, false);
@@ -157,9 +132,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             _verticalSpeed -= _gravity * Time.deltaTime;
 
 
-            if (_verticalSpeed < -_jumpPower)
+            if (_verticalSpeed < -CharacterManager.Instance.Player.stat.JumpPower)
             {
-                _verticalSpeed = -_jumpPower;
+                _verticalSpeed = -CharacterManager.Instance.Player.stat.JumpPower;
             }
         }
         controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);

@@ -4,8 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerBehavior : MonoBehaviour
+public interface IDamageable
 {
+   void TakeDamage(float damage);
+}
+
+public class PlayerBehavior : MonoBehaviour, IDamageable
+{
+    IDamageable idamagable;
+
+    void Awake()
+    {
+        idamagable = GetComponent<IDamageable>();
+    }
+
     void Start()
     {
 
@@ -14,6 +26,12 @@ public class PlayerBehavior : MonoBehaviour
     void Update()
     {
         Stop();
+    }
+
+    
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("공격당함");
     }
 
     void UpdateMoving()
