@@ -4,64 +4,67 @@ using UnityEngine;
 
 public class PlaneGeneration : MonoBehaviour
 {
+    public Dictionary<string, Vector3> objDuplicateCheck = new Dictionary<string, Vector3>();
 
     public GameObject plane;
 
-    public GameObject player;
-
+    [SerializeField]
     private int radius = 5;
-
-    private int planeOffset = 10;
-
+    private int planeOffset;
 
     private Vector3 startPos = Vector3.zero;
 
-    private int xPlayerMove => (int)(player.transform.position.x - startPos.x);
-    private int zPlayerMove => (int)(player.transform.position.z - startPos.z);
+    private int xPlayerMove => (int)(CharacterManager.Instance.Player.transform.position.x - startPos.x);
+    private int zPlayerMove => (int)(CharacterManager.Instance.Player.transform.position.z - startPos.z);
 
-    private int XPlayerLocation => (int)Mathf.Floor(player.transform.position.x / planeOffset) * planeOffset;
-    private int ZPlayerLocation => (int)Mathf.Floor(player.transform.position.z / planeOffset) * planeOffset;
+    private int XPlayerLocation => (int)Mathf.Floor(CharacterManager.Instance.Player.transform.position.x / planeOffset) * planeOffset;
+    private int ZPlayerLocation => (int)Mathf.Floor(CharacterManager.Instance.Player.transform.position.z / planeOffset) * planeOffset;
 
-    private Dictionary<string, Vector3> tilePlane = new Dictionary<string, Vector3>();
+    void Start()
+    {
+        planeOffset = radius * 2;
 
-    void Update()
-    {   
-        // 딱 시작할때만 동작. 즉 start랑 똑같음.
         if (startPos == Vector3.zero)
         {
             for (int x = -radius; x < radius; x++)
             {
                 for (int z = -radius; z < radius; z++)
                 {
-                    Vector3 pos = new Vector3(x * planeOffset + XPlayerLocation,0, z * planeOffset + ZPlayerLocation);
+                    Vector3 pos = new Vector3(x * planeOffset + XPlayerLocation, 0, z * planeOffset + ZPlayerLocation);
 
-                    if (!tilePlane.ContainsValue(pos))
+                    if (!GameManager.Instance.tilePlane.ContainsValue(pos))
                     {
                         GameObject _plane = PoolManager.Instance.Pop(plane);
                         _plane.transform.position = pos;
                         _plane.transform.rotation = Quaternion.identity;
 
-                        tilePlane.Add($"{pos}", _plane.transform.position);
+                        GameManager.Instance.tilePlane.Add($"{pos}", _plane.transform.position);
                     }
                 }
             }
         }
+    }
 
+    void Update()
+    {
         if (hasPlayerMoved())
         {
             for (int x = -radius; x < radius; x++)
             {
                 for (int z = -radius; z < radius; z++)
                 {
-                    Vector3 pos = new Vector3(x * planeOffset + XPlayerLocation,0, z * planeOffset + ZPlayerLocation);
+                    Vector3 pos = new Vector3(x * planeOffset + XPlayerLocation, 0, z * planeOffset + ZPlayerLocation);
 
-                    if (!tilePlane.ContainsValue(pos))
+                    if (!GameManager.Instance.tilePlane.ContainsValue(pos))
                     {
                         GameObject _plane = PoolManager.Instance.Pop(plane);
                         _plane.transform.position = pos;
                         _plane.transform.rotation = Quaternion.identity;
 
-                        tilePlane.Add($"{pos}", _plane.transform.position);
+                        GameManager.Instance.newPlaneForOBJ.Add(pos);
+
+                        GameManager.Instance.tilePlane.Add($"{pos}", _plane.transform.position);
+                        SpawnObj();
                     }
                 }
             }
@@ -75,5 +78,44 @@ public class PlaneGeneration : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // 이 부분을 GameObject 대신 Resource로 넣고, 그것의 타입에 따라 게임매니저에서 호출할 것을 정해주고 싶다.
+    // switch (go.data.resourcetype)
+    //     {
+    //         case ResourceType.Tree:
+    //             prefab = GameManager.Instance.SpawnTree();
+    //             go.hitCount = 3; // 스크립터블 오브젝트의 데이터를 가져오고
+    //             treeCount++; // (delegate로 게임매니저에 알려주기)
+    //             break;
+    //         case ResourceType.Rock:
+    //             prefab = GameManager.Instance.SpawnRock();
+    //             go.hitCount = 5;
+    //             rockCount++; // (delegate로 게임매니저에 알려주기)
+    //             break;
+    private void SpawnObj()
+    {
+        int randomPlaneSelection = Random.Range(0, GameManager.Instance.newPlaneForOBJ.Count);
+        
+        Vector3 randomPlanePos = GameManager.Instance.newPlaneForOBJ[randomPlaneSelection];
+
+        int randomResourceSelection = Random.Range(0, 100);
+
+        if (!objDuplicateCheck.ContainsValue(randomPlanePos))
+        {
+            if (randomResourceSelection <= 50)
+            {
+                GameObject go = GameManager.Instance.SpawnTree();
+                go.transform.position = randomPlanePos;
+
+                objDuplicateCheck.Add($"{go.transform.position}", randomPlanePos);
+            }
+            else
+            {
+                return;
+            }
+        }
+        
+        GameManager.Instance.newPlaneForOBJ.Clear();
     }
 }
