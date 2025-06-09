@@ -18,5 +18,17 @@ public class GameManager : Singleton<GameManager>
 
     public GameObject tree_Prefab;
     public GameObject SpawnTree() { return PoolManager.Instance.Pop(tree_Prefab); }
-    public void DeSpawnTree(GameObject tree) { PoolManager.Instance.Push(tree); }
+    public void DeSpawnTree(GameObject tree_Prefab) { PoolManager.Instance.Push(tree_Prefab); }
+
+    public GameObject rock_Prefab;
+    public GameObject SpawnRock() { return PoolManager.Instance.Pop(rock_Prefab); }
+    public void DeSpawnRock(GameObject rock_Prefab) { PoolManager.Instance.Push(rock_Prefab); }
+
+    public GameObject Iron_Prefab;
+    public GameObject SpawnIron() { return PoolManager.Instance.Pop(Iron_Prefab); }
+    public void DeSpawnIron(GameObject Iron_Prefab) { PoolManager.Instance.Push(Iron_Prefab); }
+
+    public GameObject mushroom_Prefab;
+    public GameObject SpawnMushroom() { return PoolManager.Instance.Pop(mushroom_Prefab); }
+    public void DeSpawnMushroom(GameObject mushroom_Prefab) { PoolManager.Instance.Push(mushroom_Prefab); }
 }

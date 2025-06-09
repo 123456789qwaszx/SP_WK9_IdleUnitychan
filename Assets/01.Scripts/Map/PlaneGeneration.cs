@@ -99,13 +99,37 @@ public class PlaneGeneration : MonoBehaviour
         
         Vector3 randomPlanePos = GameManager.Instance.newPlaneForOBJ[randomPlaneSelection];
 
-        int randomResourceSelection = Random.Range(0, 100);
+        int randomResourceSelection = Random.Range(0, 400);
 
         if (!objDuplicateCheck.ContainsValue(randomPlanePos))
         {
-            if (randomResourceSelection <= 50)
+            if (randomResourceSelection <= 140)
             {
                 GameObject go = GameManager.Instance.SpawnTree();
+                go.transform.position = randomPlanePos;
+
+                objDuplicateCheck.Add($"{go.transform.position}", randomPlanePos);
+            }
+            else if (randomResourceSelection > 140 && randomResourceSelection <= 150)
+            {
+                
+                GameObject go = GameManager.Instance.SpawnRock();
+                go.transform.position = randomPlanePos;
+
+                objDuplicateCheck.Add($"{go.transform.position}", randomPlanePos);
+            }
+            else if (randomResourceSelection > 150 && randomResourceSelection <= 160)
+            {
+                
+                GameObject go = GameManager.Instance.SpawnIron();
+                go.transform.position = randomPlanePos;
+
+                objDuplicateCheck.Add($"{go.transform.position}", randomPlanePos);
+            }
+            else if (randomResourceSelection > 160 && randomResourceSelection <= 200)
+            {
+
+                GameObject go = GameManager.Instance.SpawnMushroom();
                 go.transform.position = randomPlanePos;
 
                 objDuplicateCheck.Add($"{go.transform.position}", randomPlanePos);

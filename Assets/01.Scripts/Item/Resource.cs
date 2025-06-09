@@ -62,7 +62,7 @@ public class Resource : MonoBehaviour, IDamageable
 
     public GameObject SpawnResource(GameObject prefab)
     {
-        GameObject go = GameObject.Instantiate(prefab);
+        GameObject go = PoolManager.Instance.Pop(prefab);
         go.name = prefab.name;
         return go;
     }
