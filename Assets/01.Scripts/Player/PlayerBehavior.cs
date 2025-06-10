@@ -25,6 +25,24 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     protected GameObject _target = null;
     public EnemyScanner enemyScanner;
 
+    protected Damageable _Damageable;
+
+
+    void OnEnable()
+    {
+        _Damageable = GetComponent<Damageable>();
+        _Damageable.onDamageMessageReceivers.Add(this);
+        Debug.Log(_Damageable.onDamageMessageReceivers.Count);
+
+        _Damageable.isInvulnerable = true;
+    }
+
+
+    void OnDisable()
+    {
+        _Damageable.onDamageMessageReceivers.Remove(this);
+    }
+
 
     void Start()
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using System.Collections.Generic;
 
 public enum MessageType
 {
@@ -15,19 +16,28 @@ public interface IMessageReceiver
     void OnReceiveMessage(MessageType type, object sender, object msg);
 }
 
-public struct DamageMessage
-{
-    public MonoBehaviour damager;
-    public int amount;
-    public Vector3 direction;
-    public Vector3 damageSource;
-    public bool throwing;
 
-    public bool stopCamera;
+public class EnforceTypeAttribute : PropertyAttribute
+{
+    public System.Type type;
+
+    public EnforceTypeAttribute(System.Type enforcedType)
+    {
+        type = enforcedType;
+    }
 }
+
 
 public class Damageable : MonoBehaviour
 {
+
+    public struct DamageMessage
+    {
+        public MonoBehaviour damager;
+        public int amount;
+        public Vector3 damageSource;
+    }
+
     public int maxHitPoints;
     public float invulnerabiltyTime;
 
@@ -38,6 +48,9 @@ public class Damageable : MonoBehaviour
 
     protected float _timeSinceLastHit = 0.0f;
     protected Collider _collider;
+
+    [EnforceType(typeof(IMessageReceiver))]
+    public List<MonoBehaviour> onDamageMessageReceivers;
 
     Action schedule;
 
@@ -79,6 +92,7 @@ public class Damageable : MonoBehaviour
 
     public void ApplyDamage(DamageMessage data)
     {
+        Debug.Log("ApplyDamage!");
         if (currentHitPoints <= 0)
         {// 이미 죽은 상태, 대미지 무시
             return;
@@ -104,6 +118,15 @@ public class Damageable : MonoBehaviour
             OnReceiveDamage.Invoke();
 
         var messageType = currentHitPoints <= 0 ? MessageType.DEAD : MessageType.DAMAGED;
+        Debug.Log("ApplyDamage!!");
+
+        // 데미지 판정을 다른 오브젝트에게 전달
+        for (var i = 0; i < onDamageMessageReceivers.Count; ++i)
+        {
+            var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
+            receiver.OnReceiveMessage(messageType, this, data);
+            Debug.Log(onDamageMessageReceivers.Count);
+        }
     }
 
     void LateUpdate()

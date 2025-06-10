@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Resource
   - Item
+  - Monster
   layers:
   - Default
   - TransparentFX

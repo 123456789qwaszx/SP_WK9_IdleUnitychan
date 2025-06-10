@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skeleton : MonoBehaviour
+public class Skeleton : MonoBehaviour, IMessageReceiver
 {
     [SerializeField]
     EnemyData data;
 
-    protected Player _target = null;
-    protected MonsterController _controller;
+    protected Player _mTarget = null;
+    protected MonsterController _mController;
 
-    public Player Target { get { return _target; } }
-    public MonsterController Controller { get { return _controller; } }
+    public Player _MTarget { get { return _mTarget; } }
+    public MonsterController _MController { get { return _mController; } }
 
     public TargetScanner playerScanner;
+
+    public AIState currentState;
+
 
 
     public void OnReceiveMessage(MessageType type, object sender, object msg)
@@ -21,23 +24,37 @@ public class Skeleton : MonoBehaviour
         switch (type)
         {
             case MessageType.DEAD:
-                Death((DamageMessage)msg);
+                Death((Damageable.DamageMessage)msg);
                 break;
             case MessageType.DAMAGED:
-                ApplyDamage((DamageMessage)msg);
+                ApplyDamage((Damageable.DamageMessage)msg);
                 break;
             default:
                 break;
         }
     }
 
-    public void Death(DamageMessage msg)
+    public void Death(Damageable.DamageMessage msg)
+    {
+        PoolManager.Instance.Push(gameObject);
+
+        // 사운드 재생
+        // 죽는 애니메이션
+        // 튕겨올라갔다 땅에 떨어지는 좌표이동
+    }
+
+    public void ApplyDamage(Damageable.DamageMessage msg)
     {
 
     }
 
-    public void ApplyDamage(DamageMessage msg)
+    public void Attack()
     {
-        
+        //Controller.animator.SetBool("m_HasAttack")
+    }
+
+    public void FindTarget()
+    {
+        _mTarget = playerScanner.Detect(transform, _mTarget = null);
     }
 }

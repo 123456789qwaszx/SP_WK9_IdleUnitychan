@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6529139020616029247}
   - component: {fileID: 7446476696314511413}
   - component: {fileID: -4436271391280944657}
+  - component: {fileID: -4512087144412417902}
   m_Layer: 0
   m_Name: axe_equip
   m_TagString: Untagged
@@ -101,3 +102,17 @@ MonoBehaviour:
   doesGatherResources: 0
   doesDealDamage: 0
   damage: 0
+--- !u!114 &-4512087144412417902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716462369738424669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cece817aac22ed49a9cd773d7ae2fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 1
+  _owner: {fileID: 0}

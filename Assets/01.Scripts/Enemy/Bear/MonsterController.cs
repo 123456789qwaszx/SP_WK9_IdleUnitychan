@@ -4,27 +4,22 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 
-//this assure it's runned before any behaviour that may use it, as the animator need to be fecthed
-[DefaultExecutionOrder(-1)]
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterController : MonoBehaviour
 {
-    public bool interpolateTurning = false;
-    public bool applyAnimationRotation = false;
-
     public Animator animator { get { return m_Animator; } }
-    public Vector3 externalForce { get { return m_ExternalForce; } }
     public NavMeshAgent navmeshAgent { get { return m_NavMeshAgent; } }
-    public bool followNavmeshAgent { get { return m_FollowNavmeshAgent; } }
     public bool grounded { get { return m_Grounded; } }
 
-    protected NavMeshAgent m_NavMeshAgent;
-    protected bool m_FollowNavmeshAgent;
     protected Animator m_Animator;
-    protected bool m_UnderExternalForce;
+    protected NavMeshAgent m_NavMeshAgent;
+
+    
     protected bool m_ExternalForceAddGravity = true;
     protected Vector3 m_ExternalForce;
+
     protected bool m_Grounded;
+    protected bool m_UnderExternalForce;
 
     protected Rigidbody m_Rigidbody;
 
@@ -34,7 +29,6 @@ public class MonsterController : MonoBehaviour
     {
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
-        m_Animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
 
         m_NavMeshAgent.updatePosition = false;
 
@@ -44,9 +38,7 @@ public class MonsterController : MonoBehaviour
 
         m_Rigidbody.isKinematic = true;
         m_Rigidbody.useGravity = false;
-        m_Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        m_FollowNavmeshAgent = true;
     }
 
     private void FixedUpdate()
@@ -79,34 +71,6 @@ public class MonsterController : MonoBehaviour
         {
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
         }
-
-        m_NavMeshAgent.Warp(m_Rigidbody.position);
-    }
-
-    private void OnAnimatorMove()
-    {
-        if (m_UnderExternalForce)
-            return;
-
-        if (m_FollowNavmeshAgent)
-        {
-            m_NavMeshAgent.speed = (m_Animator.deltaPosition / Time.deltaTime).magnitude;
-            transform.position = m_NavMeshAgent.nextPosition;
-        }
-        else
-        {
-            RaycastHit hit;
-            if (!m_Rigidbody.SweepTest(m_Animator.deltaPosition.normalized, out hit,
-                m_Animator.deltaPosition.sqrMagnitude))
-            {
-                m_Rigidbody.MovePosition(m_Rigidbody.position + m_Animator.deltaPosition);
-            }
-        }
-
-        if (applyAnimationRotation)
-        {
-            transform.forward = m_Animator.deltaRotation * transform.forward;
-        }
     }
 
     // used to disable position being set by the navmesh agent, for case where we want the animation to move the enemy instead (e.g. Chomper attack)
@@ -121,7 +85,6 @@ public class MonsterController : MonoBehaviour
             m_NavMeshAgent.Warp(transform.position);
         }
 
-        m_FollowNavmeshAgent = follow;
         m_NavMeshAgent.enabled = follow;
     }
 
@@ -140,19 +103,6 @@ public class MonsterController : MonoBehaviour
     {
         m_UnderExternalForce = false;
         m_NavMeshAgent.enabled = true;
-    }
-
-    public void SetForward(Vector3 forward)
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(forward);
-
-        if (interpolateTurning)
-        {
-            targetRotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
-                m_NavMeshAgent.angularSpeed * Time.deltaTime);
-        }
-
-        transform.rotation = targetRotation;
     }
 
     public bool SetTarget(Vector3 position)
