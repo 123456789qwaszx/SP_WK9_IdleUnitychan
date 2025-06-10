@@ -60,7 +60,7 @@ public class NPC : MonoBehaviour
     void Update()
     {
         playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.Player.transform.position);
-        animator.SetBool("Moving", aiState != AIState.Idle);
+        //animator.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
         {
