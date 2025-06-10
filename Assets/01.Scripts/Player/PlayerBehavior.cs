@@ -5,24 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public enum Layer
-{
-    Ground = 6,
-    Monster = 7,
-    Wall = 8,
-    Item = 9
-}
-
-
-public enum PlayerState
-{
-    Die,
-    Idle,
-    Moving,
-    Skill,
-}
-
-
 public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     IDamageable idamagable;
@@ -32,11 +14,9 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     int _mask = (1 << (int)Layer.Ground) | (1 << (int)Layer.Monster) | (1 << (int)Layer.Item);
 
-
     GameObject _lockTarget;
     Vector3 _destPos;
 
-    bool _canAttack;
     float _attackLimit = 1;
 
 
@@ -48,26 +28,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         _attackLimit = 5;
     }
 
-
-    void Update()
-    {
-
-        switch (_state)
-        {
-            case PlayerState.Die:
-                UpdateDie();
-                break;
-            case PlayerState.Idle:
-                UpdateIdle();
-                break;
-            case PlayerState.Moving:
-                UpdateMoving();
-                break;
-            case PlayerState.Skill:
-                UpdateSkill();
-                break;
-        }
-    }
 
     void OnHitEvent()
     {
@@ -134,13 +94,13 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
 
-    void UpdateSkill()
+    public void UpdateSkill()
     {
         anim.SetBool("Attack", true);
     }
 
 
-    void UpdateMoving()
+    public void UpdateMoving()
     {
         if (_lockTarget != null)
         {
@@ -148,7 +108,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             float distance = (_destPos - transform.position).magnitude;
             if (distance <= _attackLimit)
             {
-                _canAttack = true;
                 _state = PlayerState.Skill;
                 anim.SetFloat("Speed", 1f);
 
@@ -171,12 +130,12 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
 
-    void UpdateIdle()
+    public void UpdateIdle()
     {
     }
 
 
-    void UpdateDie()
+    public void UpdateDie()
     {
 
     }

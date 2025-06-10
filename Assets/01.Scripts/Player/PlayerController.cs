@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 
     public bool _isGrounded;
     public bool _readyToJump;
-    public bool CanAct = true;
 
     float _curDirx;
 
@@ -35,12 +34,6 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!CanAct)
-            return;
-
-        Move();
-        Jump();
-
         if (!_isGrounded)
             anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
     }
