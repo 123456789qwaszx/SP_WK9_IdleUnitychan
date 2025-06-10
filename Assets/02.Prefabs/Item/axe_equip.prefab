@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7446476696314511413}
   - component: {fileID: -4436271391280944657}
   - component: {fileID: -4512087144412417902}
+  - component: {fileID: 1503979456372755544}
   m_Layer: 0
   m_Name: axe_equip
   m_TagString: Untagged
@@ -116,3 +117,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 1
   _owner: {fileID: 0}
+--- !u!65 &1503979456372755544
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716462369738424669}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.14663287, y: 0.25599995, z: 0.039999995}
+  m_Center: {x: 0, y: 0.12799998, z: 0}

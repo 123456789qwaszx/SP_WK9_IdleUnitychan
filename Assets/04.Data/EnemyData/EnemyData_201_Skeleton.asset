@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_201_Skeleton
   m_EditorClassIdentifier: 
   displayName: "\uC2A4\uCF08\uB808\uD1A4"
-  enemytype: 0
+  enemytype: 2
   monsterStat:
   - type: 1
     value: 15

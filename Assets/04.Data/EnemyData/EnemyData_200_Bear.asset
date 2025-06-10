@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData_200_Bear
   m_EditorClassIdentifier: 
   displayName: "\uACF0"
-  enemytype: 0
+  enemytype: 1
   monsterStat:
   - type: 1
     value: 30

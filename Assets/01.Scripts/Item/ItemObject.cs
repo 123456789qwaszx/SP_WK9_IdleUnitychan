@@ -23,7 +23,7 @@ public class ItemObject : MonoBehaviour, IInteractable
     {
         CharacterManager.Instance.Player.interaction.itemData = data;
         CharacterManager.Instance.Player.interaction.addItem?.Invoke();
-        PoolManager.Instance.Push(gameObject);
+        Destroy(gameObject);
     }
 
 }

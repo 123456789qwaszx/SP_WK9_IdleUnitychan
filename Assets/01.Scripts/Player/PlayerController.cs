@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            anim.SetTrigger("IsAttack");
+            anim.SetBool("Attack", true);
         }
     }
 }

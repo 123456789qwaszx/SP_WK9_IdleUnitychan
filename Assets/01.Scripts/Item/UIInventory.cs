@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -155,11 +154,11 @@ public class UIInventory : MonoBehaviour
 
     public void SelectItem(int index)
     {
+        Debug.Log($"아이템 선택{index}");
         if (slots[index].item == null)
         {
             return;
         }
-
 
         selectedItem = slots[index].item;
         selectedItemIndex = index;
