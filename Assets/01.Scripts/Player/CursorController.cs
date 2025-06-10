@@ -12,7 +12,7 @@ public class CursorController : MonoBehaviour
     Texture2D _attackIcon;
     Texture2D _HandIcon;
     Texture2D _LootIcon;
-    public bool IsHandCursor;
+    bool IsHandCursor;
 
 
     void Start()
