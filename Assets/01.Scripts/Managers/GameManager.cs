@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum Layer
 {
@@ -27,6 +28,9 @@ public class GameManager : Singleton<GameManager>
     public bool JumpInput;
     public bool IdleMode;
 
+    // UIInventory
+    public GameObject inventoryWindow;
+
     public GameObject bear_Prefab;
     public GameObject SpawnBear() { return PoolManager.Instance.Pop(bear_Prefab); }
     public void DespawnBear(GameObject bear) { PoolManager.Instance.Push(bear); }
@@ -46,4 +50,35 @@ public class GameManager : Singleton<GameManager>
     public GameObject mushroom_Prefab;
     public GameObject SpawnMushroom() { return PoolManager.Instance.Pop(mushroom_Prefab); }
     public void DeSpawnMushroom(GameObject mushroom_Prefab) { PoolManager.Instance.Push(mushroom_Prefab); }
+
+
+    public void OnIdleMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (GameManager.Instance.IdleMode == false)
+            {
+                GameManager.Instance.IdleMode = true;
+            }
+            else
+            {
+                GameManager.Instance.IdleMode = false;
+            }
+        }
+    }
+    
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (inventoryWindow.activeInHierarchy == false)
+            {
+                inventoryWindow.SetActive(true);
+            }
+            else
+            {
+                inventoryWindow.SetActive(false);
+            }
+        }
+    }
 }

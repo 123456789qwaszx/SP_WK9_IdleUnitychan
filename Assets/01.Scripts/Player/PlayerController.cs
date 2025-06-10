@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,12 +31,12 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
     }
-    
+
 
     public void AnimationJump()
     {
         if (!_isGrounded)
-        anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
+            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
     }
 
 
@@ -133,6 +134,15 @@ public class PlayerController : MonoBehaviour
         {
             _isGrounded = true;
             anim.SetBool(_HashISGrounded, true);
+        }
+    }
+
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            anim.SetTrigger("IsAttack");
         }
     }
 }

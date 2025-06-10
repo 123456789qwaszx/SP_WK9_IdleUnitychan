@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EquipType
+public enum EquipmentType
 {
     Weapon,
     Armor,
 }
 
 [Serializable]
-public class EquipValue
+public class EquipmentStatus
 {
-    public EquipType type;
+    public EquipmentType type;
     public int value;
 }
 
@@ -21,9 +21,16 @@ public class EquipmentData : ScriptableObject
 {
     [Header("Info")]
     public string equipmentName;
-    public EquipType equipmentType;
+    public string description;
+    public EquipmentType equipmentType;
+    public GameObject dropPrefab;
     public GameObject equipPrefab;
+    public Sprite equipmentIcon;
 
-    [Header("EnemyStat")]
-    public EquipValue[] equipmentValue;
+    [Header("stacking")]
+    public bool canStack;
+    public int maxStackAmount;
+
+    [Header("EquipmenyStatus")]
+    public EquipmentStatus[] equipmentStatus;
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Resource : MonoBehaviour, IDamageable
+public class Resource : MonoBehaviour
 {
     public Interactions interaction;
     public ResourceData _data;
@@ -89,11 +89,5 @@ public class Resource : MonoBehaviour, IDamageable
                 default:
                     break;
             }
-    }
-
-
-    public void TakeDamage(float damage)
-    {
-        hitCount -= damage;
     }
 }

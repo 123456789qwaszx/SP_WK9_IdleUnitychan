@@ -31,22 +31,6 @@ public class Player : MonoBehaviour
         interaction = GetComponent<PlayerInteractions>();
     }
 
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (GameManager.Instance.IdleMode == false)
-            {
-                GameManager.Instance.IdleMode = true;
-            }
-            else
-            {
-                GameManager.Instance.IdleMode = false;
-            }
-        }
-    }
-
     void LateUpdate()
     {
         if (GameManager.Instance.IdleMode == false)
@@ -76,10 +60,5 @@ public class Player : MonoBehaviour
         }
 
         controller.AnimationJump();
-    }
-
-    void OncollisionEnter(Collision collision)
-    {
-
     }
 }
