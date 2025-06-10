@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class PlayerInteraction : MonoBehaviour
+public class Interactions : MonoBehaviour
 {
     public Action<Player> OnPlayerInteraction;
     public float InteractInterval = 0.5f;

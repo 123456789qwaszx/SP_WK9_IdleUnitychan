@@ -18,7 +18,6 @@ public class BearSMBAttack : SceneLinkedSMB<BearBehavior>
         toTarget.y = 0;
 
         m_MonoBehaviour.transform.forward = toTarget.normalized;
-        m_MonoBehaviour.controller.SetForward(m_MonoBehaviour.transform.forward);
 
     }
 

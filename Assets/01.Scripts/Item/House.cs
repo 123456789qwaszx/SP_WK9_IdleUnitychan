@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
-    public PlayerInteraction interaction;
+    public Interactions interaction;
     private float workSpeed = 0.5f;
 
     [SerializeField]

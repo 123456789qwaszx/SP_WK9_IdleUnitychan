@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour, IDamageable
 {
-    public PlayerInteraction interaction;
+    public Interactions interaction;
     public ResourceData _data;
     //public SpawningPool spawningPool;
 

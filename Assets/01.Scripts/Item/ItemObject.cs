@@ -11,19 +11,19 @@ public interface IInteractable
 
 public class ItemObject : MonoBehaviour, IInteractable
 {
-    public ResourceData data;
+    public EquipmentData data;
 
     public string GetInteractPrompt()
     {
-        string str = $"{data.displayName}\n{data.description}";
+        string str = $"{data.equipmentName}\n{data.equipmentValue[0].value}";
         return str;
     }
 
     public void OnInteract()
     {
-        //Managers.Player.Player.itemData = data;
-        //Managers.Player.Player.addItem?.Invoke();
-        Destroy(gameObject);
+        CharacterManager.Instance.Player.interaction.itemData = data;
+        CharacterManager.Instance.Player.interaction.addItem?.Invoke();
+        PoolManager.Instance.Push(gameObject);
     }
 
 }

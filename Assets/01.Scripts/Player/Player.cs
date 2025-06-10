@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
     public PlayerCondition condition;
     public PlayerBehavior behavior;
     public PlayerStat stat;
+    public PlayerInteractions interaction;
 
 
     void Awake()
@@ -26,7 +28,9 @@ public class Player : MonoBehaviour
         condition = GetComponent<PlayerCondition>();
         behavior = GetComponent<PlayerBehavior>();
         stat = GetComponent<PlayerStat>();
+        interaction = GetComponent<PlayerInteractions>();
     }
+
 
     void Update()
     {
@@ -53,7 +57,7 @@ public class Player : MonoBehaviour
         else
         {
             behavior.FindEnemy();
-            
+
             switch (behavior._state)
             {
                 case PlayerState.Die:
@@ -72,5 +76,10 @@ public class Player : MonoBehaviour
         }
 
         controller.AnimationJump();
+    }
+
+    void OncollisionEnter(Collision collision)
+    {
+
     }
 }
