@@ -3,21 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 또 플레이어 애니메이션 Direction 값의 -1, +1이 현재 dir.y로만 조절되고 있는데,
-// dir.x조건도 추가할것.
 public class PlayerController : MonoBehaviour
 {
     Animator anim;
     CharacterController controller;
 
-    public bool _isGrounded;
-    public bool _readyToJump;
+    bool _isGrounded;
+    bool _readyToJump;
 
     float _curDirx;
 
-    public float _gravity;
-    public float _verticalSpeed;
+    float _verticalSpeed;
 
+    // 이렇게 열어둬야 동작함. 이유는 알아보기
+    public float _gravity;
     const float JumpAbortSpeed = 1f;
 
     readonly int _HashAirborneVerticalSpeed = Animator.StringToHash("VerticalSpeed");
@@ -31,11 +30,12 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
     }
+    
 
-    void FixedUpdate()
+    public void AnimationJump()
     {
         if (!_isGrounded)
-            anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
+        anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
     }
 
 
@@ -91,8 +91,6 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        // 혹시 2단점프나, 공중에서 점프아이템 먹는 기능을 위해 p_ReadyToJump체크도 추가함.
-        // 실제 체크는 IsGround로만 해도됨.
         if (!GameManager.Instance.JumpInput && controller.isGrounded)
             _readyToJump = true;
 
@@ -130,7 +128,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         controller.Move(_verticalSpeed * Vector3.up * Time.deltaTime);
-        //다시 점프 뛸 준비
 
         if (controller.isGrounded)
         {

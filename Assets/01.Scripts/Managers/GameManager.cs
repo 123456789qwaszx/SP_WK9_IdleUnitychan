@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
     public List<Vector3> newPlaneForOBJ = new List<Vector3>();
 
     // EnemyScanner에서 찾은 몬스터를 받아오는 리스트
-    public List<Transform> detected = new List<Transform>();
+    public Dictionary<int, Vector3> detected = new Dictionary<int, Vector3>();
 
     //MouseDragStick에서 마우스의 움직인 방향을 받아옴
     public Vector2 MouseDir { get; set; } = Vector2.zero;

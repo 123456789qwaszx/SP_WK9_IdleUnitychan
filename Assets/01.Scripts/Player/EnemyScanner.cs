@@ -13,17 +13,17 @@ public class EnemyScanner : MonoBehaviour
     // public LayerMask viewBlockerLayerMask;
     // public Dectable _enemy;
 
-    public float ViewAngle;    //시야각
-    public float ViewDistance; //시야거리
+    public float ViewAngle = 360;    //시야각
+    public float ViewDistance = 15; //시야거리
 
     void Update()
     {
         DrawView();
-        FinaVisibleTargets();
+        //FinaVisibleTargets();
     }
 
 
-    public void FinaVisibleTargets()
+    public void FindVisibleTargets()
     {
         // 시야범위 내에서 MonsterLayer를 가진 콜라이더 가져오기
         // 이러면 저 시야 범위를 5~10으로 정할 수도 있나? 그러면 그걸로 바닥을 판단해서 지워버리면 진짜 편할 것 같은데 나중에 해봐야겠다.
@@ -44,7 +44,7 @@ public class EnemyScanner : MonoBehaviour
 
                 if (Physics.Raycast(gameObject.transform.position, dirToTarget, distToTarget, _mask))
                 {
-                    GameManager.Instance.detected.Add(target);
+                    GameManager.Instance.detected.Add(GameManager.Instance.detected.Count, target.transform.position);
                 }
             }
         }

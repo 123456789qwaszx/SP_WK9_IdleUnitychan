@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
+
 public class PlayerBehavior : MonoBehaviour, IDamageable
 {
     IDamageable idamagable;
@@ -17,17 +18,60 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     GameObject _lockTarget;
     Vector3 _destPos;
 
-    float _attackLimit = 1;
+    float _attackDitance = 3;
+
+    public GameObject enemy { get { return _target; } }
+
+    protected GameObject _target = null;
+    public EnemyScanner enemyScanner;
 
 
     void Start()
     {
         idamagable = GetComponent<IDamageable>();
         anim = GetComponent<Animator>();
+        enemyScanner = GetComponent<EnemyScanner>();
 
-        _attackLimit = 5;
+        _attackDitance = 3;
     }
 
+
+    public void FindEnemy()
+    {
+        enemyScanner.FindVisibleTargets();
+
+        for (int i = 0; i < GameManager.Instance.detected.Count; i++)
+        {
+            Vector3 targetPosition = GameManager.Instance.detected[i];
+            if (GameManager.Instance.detected.Count > 0)
+            {
+                // UI 적발견!!
+                Vector3 toTarget = targetPosition - transform.position;
+                toTarget.y = 0;
+
+                if (toTarget.sqrMagnitude < _attackDitance * _attackDitance)
+                {
+                    //anim.SetTrigger("Attack");
+                    _state = PlayerState.Skill;
+                }
+
+                if (toTarget.magnitude < 0.3f)
+                {
+                    _state = PlayerState.Idle;
+                }
+                else
+                {
+                    NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+                    float moveDist = Mathf.Clamp(CharacterManager.Instance.Player.stat.MoveSpeed * Time.deltaTime, 0, toTarget.magnitude);
+                    nma.Move(toTarget.normalized * moveDist);
+                }
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), 20 * Time.deltaTime);
+            }
+        }
+
+        Debug.Log("적을 찾지 못했습니다. 다음 장소로 이동합니다");
+        //다음 이동경로 탐색
+    }
 
     void OnHitEvent()
     {
@@ -106,7 +150,7 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         {
             _destPos = _lockTarget.transform.position;
             float distance = (_destPos - transform.position).magnitude;
-            if (distance <= _attackLimit)
+            if (distance <= _attackDitance)
             {
                 _state = PlayerState.Skill;
                 anim.SetFloat("Speed", 1f);
@@ -160,4 +204,3 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
         Debug.Log("공격당함");
     }
 }
-
