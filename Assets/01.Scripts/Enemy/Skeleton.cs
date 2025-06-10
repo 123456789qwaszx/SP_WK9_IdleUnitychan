@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class Skeleton : MonoBehaviour
 {
-    public EnemyData data;
-    
+    [SerializeField]
+    EnemyData data;
 
-    void Start()
+    protected Player _target = null;
+    protected MonsterController _controller;
+
+    public Player Target { get { return _target; } }
+    public MonsterController Controller { get { return _controller; } }
+
+    public TargetScanner playerScanner;
+
+
+    public void OnReceiveMessage(MessageType type, object sender, object msg)
     {
-        
+        switch (type)
+        {
+            case MessageType.DEAD:
+                Death((DamageMessage)msg);
+                break;
+            case MessageType.DAMAGED:
+                ApplyDamage((DamageMessage)msg);
+                break;
+            default:
+                break;
+        }
     }
 
-    void Update()
+    public void Death(DamageMessage msg)
+    {
+
+    }
+
+    public void ApplyDamage(DamageMessage msg)
     {
         
     }
