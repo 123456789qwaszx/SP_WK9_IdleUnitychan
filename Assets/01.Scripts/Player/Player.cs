@@ -44,12 +44,6 @@ public class Player : MonoBehaviour
 
             switch (behavior._state)
             {
-                case PlayerState.Die:
-                    behavior.UpdateDie();
-                    break;
-                case PlayerState.Idle:
-                    behavior.UpdateIdle();
-                    break;
                 case PlayerState.Moving:
                     behavior.UpdateMoving();
                     break;
@@ -59,6 +53,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        controller.AnimationJump();
+        controller.AnimationCalculate();
+
+        GameManager.Instance.detected.Clear();
     }
 }

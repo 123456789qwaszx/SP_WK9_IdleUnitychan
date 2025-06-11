@@ -126,6 +126,7 @@ public class Damageable : MonoBehaviour
         if (currentHitPoints == 0)
         {
             PoolManager.Instance.Push(gameObject);
+            GameManager.Instance.detected.Clear();
 
         switch (_enemyData.enemytype)
             {

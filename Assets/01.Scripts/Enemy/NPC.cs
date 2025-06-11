@@ -156,7 +156,6 @@ public class NPC : MonoBehaviour
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                CharacterManager.Instance.Player.controller.GetComponent<IDamageable>().TakeDamage(damage);
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
             }

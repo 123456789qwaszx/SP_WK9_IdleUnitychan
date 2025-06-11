@@ -43,7 +43,6 @@ public class MonsterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //animator.speed = PlayerInput.Instance != null && PlayerInput.Instance.HaveControl() ? 1.0f : 0.0f;
         animator.speed = 1.5f;
 
         CheckGrounded();
@@ -73,7 +72,6 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    // used to disable position being set by the navmesh agent, for case where we want the animation to move the enemy instead (e.g. Chomper attack)
     public void SetFollowNavmeshAgent(bool follow)
     {
         if (!follow && m_NavMeshAgent.enabled)

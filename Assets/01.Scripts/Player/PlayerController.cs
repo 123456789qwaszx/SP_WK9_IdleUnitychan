@@ -33,10 +33,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void AnimationJump()
+    public void AnimationCalculate()
     {
         if (!_isGrounded)
             anim.SetFloat(_HashAirborneVerticalSpeed, _verticalSpeed / CharacterManager.Instance.Player.stat.JumpPower);
+
+        // 현재 "Attack" false을 event로 하고 있다보니, 종종 모션이 끝까지 안나오면 재생이 안됨. 당장 마감이 코앞이라... 부끄럽습니다.
+        anim.SetBool("Attack", false);
     }
 
 

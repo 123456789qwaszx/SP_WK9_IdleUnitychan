@@ -13,8 +13,6 @@ public class Skeleton : MonoBehaviour, IMessageReceiver
     public Player _MTarget { get { return _mTarget; } }
     public MonsterController _MController { get { return _mController; } }
 
-    public TargetScanner playerScanner;
-
     public AIState currentState;
 
 
@@ -50,11 +48,6 @@ public class Skeleton : MonoBehaviour, IMessageReceiver
 
     public void Attack()
     {
-        //Controller.animator.SetBool("m_HasAttack")
     }
 
-    public void FindTarget()
-    {
-        _mTarget = playerScanner.Detect(transform, _mTarget = null);
-    }
 }

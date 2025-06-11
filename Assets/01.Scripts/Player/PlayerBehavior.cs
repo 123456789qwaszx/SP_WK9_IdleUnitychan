@@ -6,9 +6,8 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 
-public class PlayerBehavior : MonoBehaviour, IDamageable
+public class PlayerBehavior : MonoBehaviour
 {
-    IDamageable idamagable;
     Animator anim;
 
     public PlayerState _state;
@@ -45,13 +44,17 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
 
     void Start()
     {
-        idamagable = GetComponent<IDamageable>();
         anim = GetComponent<Animator>();
         enemyScanner = GetComponent<EnemyScanner>();
 
         _attackDitance = 3;
     }
 
+    
+    public void StateClear()
+    {
+        anim.SetBool("Attack", false);
+    }
 
     public void FindEnemy()
     {
@@ -133,13 +136,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
 
-    public void OnInventory(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Started)
-        {
-
-        }
-    }
 
 
     public void OnJump(InputAction.CallbackContext context)
@@ -153,7 +149,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             GameManager.Instance.JumpInput = false;
         }
     }
-
 
     public void UpdateSkill()
     {
@@ -171,7 +166,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
             {
                 _state = PlayerState.Skill;
                 anim.SetFloat("Speed", 1f);
-
             }
         }
 
@@ -216,8 +210,4 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     }
 
 
-    public void TakeDamage(float damage)
-    {
-        Debug.Log("공격당함");
-    }
 }
