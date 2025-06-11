@@ -5,14 +5,4 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public EnemyData enemyData;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 }

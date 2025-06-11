@@ -1513,7 +1513,7 @@ MonoBehaviour:
   health: 0
   walkSpeed: 1
   runSpeed: 2
-  detectDistance: 20
+  detectDistance: 7
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1

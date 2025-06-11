@@ -38,23 +38,11 @@ public class Player : MonoBehaviour
             controller.Move();
             controller.Jump();
         }
-        else
-        {
-            behavior.FindEnemy();
-
-            switch (behavior._state)
-            {
-                case PlayerState.Moving:
-                    behavior.UpdateMoving();
-                    break;
-                case PlayerState.Skill:
-                    behavior.UpdateSkill();
-                    break;
-            }
-        }
-
         controller.AnimationCalculate();
 
-        GameManager.Instance.detected.Clear();
+        if (GameManager.Instance.IdleMode)
+        {
+            behavior.FindEnemy();
+        }
     }
 }

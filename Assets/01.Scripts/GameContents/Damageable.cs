@@ -26,7 +26,7 @@ public class EnforceTypeAttribute : PropertyAttribute
     }
 }
 
-
+// ApplyDamage에서 직접 대미지를 계산함
 public class Damageable : MonoBehaviour
 {
 
@@ -126,7 +126,6 @@ public class Damageable : MonoBehaviour
         if (currentHitPoints == 0)
         {
             PoolManager.Instance.Push(gameObject);
-            GameManager.Instance.detected.Clear();
 
         switch (_enemyData.enemytype)
             {

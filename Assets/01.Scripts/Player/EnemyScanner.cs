@@ -15,6 +15,7 @@ public class EnemyScanner : MonoBehaviour
 
     public float ViewAngle = 360;    //시야각
     public float ViewDistance = 15; //시야거리
+    public LayerMask _layermask;
 
     void Update()
     {
@@ -42,7 +43,7 @@ public class EnemyScanner : MonoBehaviour
             {
                 float distToTarget = Vector3.Distance(gameObject.transform.position, target.position);
 
-                if (Physics.Raycast(gameObject.transform.position, dirToTarget, distToTarget, _mask))
+                if (Physics.Raycast(gameObject.transform.position, dirToTarget, distToTarget, _layermask))
                 {
                     GameManager.Instance.detected.Add(GameManager.Instance.detected.Count, target.transform.position);
                 }

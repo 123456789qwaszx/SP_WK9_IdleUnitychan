@@ -180,7 +180,7 @@ MonoBehaviour:
   health: 0
   walkSpeed: 2
   runSpeed: 5
-  detectDistance: 33
+  detectDistance: 7
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1

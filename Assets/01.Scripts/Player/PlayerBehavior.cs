@@ -58,35 +58,34 @@ public class PlayerBehavior : MonoBehaviour
 
     public void FindEnemy()
     {
+        anim.SetBool("Attack", false);
+        GameManager.Instance.detected.Clear();
         enemyScanner.FindVisibleTargets();
 
-        for (int i = 0; i < GameManager.Instance.detected.Count; i++)
+        foreach (var go in GameManager.Instance.detected)
         {
-            Vector3 targetPosition = GameManager.Instance.detected[i];
-            if (GameManager.Instance.detected.Count > 0)
+            Vector3 targetPosition = go.Value;
+            if (GameManager.Instance.detected.Count >= 0)
             {
-                // UI 적발견!!
-                Vector3 toTarget = targetPosition - transform.position;
-                toTarget.y = 0;
+            Debug.Log(targetPosition);
+            // UI 적발견!!
+            Vector3 toTarget = targetPosition - transform.position;
+            toTarget.y = 0;
 
-                if (toTarget.sqrMagnitude < _attackDitance * _attackDitance)
-                {
-                    //anim.SetTrigger("Attack");
-                    _state = PlayerState.Skill;
-                }
-
-                if (toTarget.magnitude < 0.3f)
-                {
-                    _state = PlayerState.Idle;
-                }
-                else
-                {
-                    NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-                    float moveDist = Mathf.Clamp(CharacterManager.Instance.Player.stat.MoveSpeed * Time.deltaTime, 0, toTarget.magnitude);
-                    nma.Move(toTarget.normalized * moveDist);
-                }
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), 20 * Time.deltaTime);
+            if (toTarget.sqrMagnitude < _attackDitance * _attackDitance)
+            {
+                //anim.SetTrigger("Attack");
+                anim.SetBool("Attack", true);
             }
+            else
+            {
+                NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
+                float moveDist = Mathf.Clamp(CharacterManager.Instance.Player.stat.MoveSpeed * Time.deltaTime, 0, toTarget.magnitude);
+                nma.Move(toTarget.normalized * moveDist);
+            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), 20 * Time.deltaTime);
+            }
+        
         }
 
         Debug.Log("적을 찾지 못했습니다. 다음 장소로 이동합니다");
@@ -150,11 +149,6 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    public void UpdateSkill()
-    {
-        anim.SetBool("Attack", true);
-    }
-
 
     public void UpdateMoving()
     {
@@ -182,17 +176,6 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-    }
-
-
-    public void UpdateIdle()
-    {
-    }
-
-
-    public void UpdateDie()
-    {
-
     }
 
 
