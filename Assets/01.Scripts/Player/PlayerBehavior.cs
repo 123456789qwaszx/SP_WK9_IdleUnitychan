@@ -32,7 +32,6 @@ public class PlayerBehavior : MonoBehaviour, IDamageable
     {
         _Damageable = GetComponent<Damageable>();
         _Damageable.onDamageMessageReceivers.Add(this);
-        Debug.Log(_Damageable.onDamageMessageReceivers.Count);
 
         _Damageable.isInvulnerable = true;
     }

@@ -18,7 +18,6 @@ public class Axe : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            Debug.Log("Axe데미지!");
             CheckDamage(other);
         }
     }
@@ -37,8 +36,6 @@ public class Axe : MonoBehaviour
         data.amount = _damage;
         data.damager = this;
         data.damageSource = _owner.transform.position;
-        
-        Debug.Log("CheckDamage!");
 
         d.ApplyDamage(data);
     }

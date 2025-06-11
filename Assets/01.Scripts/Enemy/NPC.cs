@@ -44,17 +44,23 @@ public class NPC : MonoBehaviour
     private Animator animator;
     private SkinnedMeshRenderer[] meshRenderers;
 
+    Damageable damageable;
+    int curHitPoint;
+
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        damageable = GetComponent<Damageable>();
 
     }
 
     void Start()
     {
         SetState(AIState.Wandering);
+        curHitPoint = 5;
     }
 
     void Update()

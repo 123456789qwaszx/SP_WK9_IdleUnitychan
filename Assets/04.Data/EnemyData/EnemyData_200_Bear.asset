@@ -16,10 +16,10 @@ MonoBehaviour:
   enemytype: 1
   monsterStat:
   - type: 1
-    value: 30
+    value: 1
   - type: 2
     value: 5
   - type: 3
-    value: 300
+    value: 5
   - type: 4
     value: 10

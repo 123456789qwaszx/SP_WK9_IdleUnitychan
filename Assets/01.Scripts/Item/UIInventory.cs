@@ -154,7 +154,6 @@ public class UIInventory : MonoBehaviour
 
     public void SelectItem(int index)
     {
-        Debug.Log($"아이템 선택{index}");
         if (slots[index].item == null)
         {
             return;

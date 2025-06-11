@@ -16,7 +16,7 @@ public enum MonsterStat
     None,
     Attack,
     Defense,
-    MaxHp,
+    MaxHitPoints,
     MaxLv
 }
 

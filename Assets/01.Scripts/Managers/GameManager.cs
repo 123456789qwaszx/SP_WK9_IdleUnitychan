@@ -35,6 +35,15 @@ public class GameManager : Singleton<GameManager>
     public GameObject SpawnBear() { return PoolManager.Instance.Pop(bear_Prefab); }
     public void DespawnBear(GameObject bear) { PoolManager.Instance.Push(bear); }
 
+    public GameObject skleleton_Prefab;
+    public GameObject SpawnSkeleton() { return PoolManager.Instance.Pop(skleleton_Prefab); }
+    public void DespawnSkeleton(GameObject skeleton) { PoolManager.Instance.Push(skeleton); }
+
+    public GameObject orc_Prefab;
+    public GameObject SpawnOrc() { return PoolManager.Instance.Pop(orc_Prefab); }
+    public void DespawnOrc(GameObject orc) { PoolManager.Instance.Push(orc); }
+
+
     public GameObject tree_Prefab;
     public GameObject SpawnTree() { return PoolManager.Instance.Pop(tree_Prefab); }
     public void DeSpawnTree(GameObject tree_Prefab) { PoolManager.Instance.Push(tree_Prefab); }
