@@ -65,7 +65,7 @@ public  class SpawningPool : Singleton<SpawningPool>
         GameObject go;
         
         Vector3 randPos;
-        Vector3 randDir = /*CharacterManager.Instance.Player.transform.position +*/ Random.insideUnitSphere * Random.Range(0, 30);
+        Vector3 randDir = /*CharacterManager.Instance.Player.transform.position +*/ Random.insideUnitSphere * Random.Range(0, 50);
         randDir.y = 0;
         randPos = _spawnPos + randDir;
     
