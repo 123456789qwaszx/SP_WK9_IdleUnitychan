@@ -65,8 +65,7 @@ public  class SpawningPool : Singleton<SpawningPool>
         GameObject go;
         
         Vector3 randPos;
-        // 이부분에서 스폰 중심점을 당장은 플레이어로 고정시켜둠. 혹시 스폰존을 활용할거면 바꿀 것.
-        Vector3 randDir = CharacterManager.Instance.Player.transform.position + Random.insideUnitSphere * Random.Range(0, 30);
+        Vector3 randDir = /*CharacterManager.Instance.Player.transform.position +*/ Random.insideUnitSphere * Random.Range(0, 50);
         randDir.y = 0;
         randPos = _spawnPos + randDir;
     

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7874299187564325591}
   - component: {fileID: 8323742963075454379}
   - component: {fileID: 6763366377340144947}
+  - component: {fileID: -1867098250853903282}
   m_Layer: 0
   m_Name: pickaxe_equip
   m_TagString: Untagged
@@ -116,3 +117,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 1
   _owner: {fileID: 0}
+--- !u!65 &-1867098250853903282
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703648558539588444}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.17860828, y: 0.24, z: 0.04}
+  m_Center: {x: 0, y: 0.12, z: 0}
