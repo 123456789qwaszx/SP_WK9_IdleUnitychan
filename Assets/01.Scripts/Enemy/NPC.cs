@@ -45,7 +45,6 @@ public class NPC : MonoBehaviour
     private SkinnedMeshRenderer[] meshRenderers;
 
     Damageable damageable;
-    int curHitPoint;
 
 
     void Awake()
@@ -60,7 +59,6 @@ public class NPC : MonoBehaviour
     void Start()
     {
         SetState(AIState.Wandering);
-        curHitPoint = 5;
     }
 
     void Update()
