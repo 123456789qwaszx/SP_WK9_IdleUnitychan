@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90ea8604e26689c4f81eef56ce7e6896, type: 3}
-  m_Name: EnemyData_201_Skeleton
+  m_Name: EnemyData_201_Orc
   m_EditorClassIdentifier: 
-  displayName: "\uC2A4\uCF08\uB808\uD1A4"
-  enemytype: 2
+  displayName: "\uC624\uD06C"
+  enemytype: 3
   monsterStat:
   - type: 1
-    value: 15
+    value: 2
   - type: 2
-    value: 0
+    value: 10
   - type: 3
-    value: 100
+    value: 10
   - type: 4
     value: 10

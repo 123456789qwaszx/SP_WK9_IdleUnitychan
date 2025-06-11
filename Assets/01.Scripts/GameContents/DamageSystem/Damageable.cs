@@ -8,7 +8,6 @@ public enum MessageType
     DAMAGED,
     DEAD,
     RESPAWN,
-    //Add your user defined message type after
 }
 
 public interface IMessageReceiver
@@ -53,6 +52,13 @@ public class Damageable : MonoBehaviour
     public List<MonoBehaviour> onDamageMessageReceivers;
 
     Action schedule;
+    // 구조를 잘못짜니 이렇게 하나하나 붙여야 되네.
+    public EnemyData _enemyData;
+
+    void OnEnable()
+    {
+        ResetDamage();
+    }
 
     void Start()
     {
@@ -92,7 +98,6 @@ public class Damageable : MonoBehaviour
 
     public void ApplyDamage(DamageMessage data)
     {
-        Debug.Log("ApplyDamage!");
         if (currentHitPoints <= 0)
         {// 이미 죽은 상태, 대미지 무시
             return;
@@ -117,16 +122,36 @@ public class Damageable : MonoBehaviour
         else
             OnReceiveDamage.Invoke();
 
-        var messageType = currentHitPoints <= 0 ? MessageType.DEAD : MessageType.DAMAGED;
         Debug.Log("ApplyDamage!!");
+        if (currentHitPoints == 0)
+        {
+            PoolManager.Instance.Push(gameObject);
 
-        // 데미지 판정을 다른 오브젝트에게 전달
-        // for (var i = 0; i < onDamageMessageReceivers.Count; ++i)
-        // {
-        //     var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
-        //     receiver.OnReceiveMessage(messageType, this, data);
-        //     Debug.Log(onDamageMessageReceivers.Count);
-        // }
+        switch (_enemyData.enemytype)
+            {
+                case EnemyType.Bear:
+                    SpawningPool.Instance._bearCount -= 1;
+                    break;
+                case EnemyType.Skeleton:
+                    SpawningPool.Instance._skeletonCount -= 1;
+                    break;
+                case EnemyType.Orc:
+                    SpawningPool.Instance._orcCount -= 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        //var messageType = currentHitPoints <= 0 ? MessageType.DEAD : MessageType.DAMAGED;
+
+            // 데미지 판정을 다른 오브젝트에게 전달
+            // for (var i = 0; i < onDamageMessageReceivers.Count; ++i)
+            // {
+            //     var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
+            //     receiver.OnReceiveMessage(messageType, this, data);
+            //     Debug.Log(onDamageMessageReceivers.Count);
+            // }
     }
 
     void LateUpdate()
