@@ -1451,9 +1451,10 @@ GameObject:
   - component: {fileID: 2470683951229288849}
   - component: {fileID: 3961132281159431353}
   - component: {fileID: 3731771835126772524}
+  - component: {fileID: 8814112610156321976}
   m_Layer: 7
   m_Name: bear
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1582,6 +1583,37 @@ MonoBehaviour:
   _moveSpeed: 0
   _jumpPower: 0
   _rotationSensitivity: 0
+--- !u!114 &8814112610156321976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5989011261760069753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e3e85185a6e3a4db568154d3b83933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoints: 5
+  invulnerabiltyTime: 0.5
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReceiveDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitWhileInvulnerable:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBecomeVulnerable:
+    m_PersistentCalls:
+      m_Calls: []
+  OnResetDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onDamageMessageReceivers:
+  - {fileID: 2802973801116944725}
 --- !u!1 &6296296893507692886
 GameObject:
   m_ObjectHideFlags: 0

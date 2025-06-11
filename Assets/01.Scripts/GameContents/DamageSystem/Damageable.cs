@@ -121,12 +121,12 @@ public class Damageable : MonoBehaviour
         Debug.Log("ApplyDamage!!");
 
         // 데미지 판정을 다른 오브젝트에게 전달
-        for (var i = 0; i < onDamageMessageReceivers.Count; ++i)
-        {
-            var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
-            receiver.OnReceiveMessage(messageType, this, data);
-            Debug.Log(onDamageMessageReceivers.Count);
-        }
+        // for (var i = 0; i < onDamageMessageReceivers.Count; ++i)
+        // {
+        //     var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
+        //     receiver.OnReceiveMessage(messageType, this, data);
+        //     Debug.Log(onDamageMessageReceivers.Count);
+        // }
     }
 
     void LateUpdate()
