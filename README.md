@@ -43,7 +43,7 @@ Axe.OnTriggerEnter (Collider ==  몬스터) => CheckDamage(Collider)
 ->    
 데미지 계수 설정 :    
 Collider.GetComponent<Damageable>()    
-Damageable.DamageMessage data;    //Struct DamageMessage{int amount}
+Damageable.DamageMessage data;    // Struct DamageMessage{int amount}    
 data.amount = (Axe._damage);    
 collider.ApplyDamage(data);    
 ->    
