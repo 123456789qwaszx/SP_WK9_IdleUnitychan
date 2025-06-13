@@ -73,9 +73,9 @@ SpawningPool.Instance._bearCount -= 1;
  - PlayerBehavior.FindEnemy()    
  - EnemyScanner로 특정 거리내 적을 감지 // 구현    
  - 감지된 적을 GameManager에서 딕셔너리로 저장 // 구현    
- - (딕셔너리.Count>0) => 플레이어와 가장 가까운 Value를 가진 Key 선택 // 미구현
+ - (딕셔너리.Count>0) => 플레이어와 가장 가까운 Value를 가진 Key 선택 및 방향벡터추출 // 미구현
  - 적 LockOn (타겟 고정 및 방향고정) // 구현
- - 적에게 이동 // 구현(임시)
+ - 적이 있는 방향으로 이동 // 구현(임시)
  - 거리가 가까울 시 공격 // 구현
  - 적 사망 시 콜백 받아서 Dictionary.Clear(), PlayerBehavior.FindEnemy() // 미구현
  - 없으면 다음 장소 이동 // 미구현
