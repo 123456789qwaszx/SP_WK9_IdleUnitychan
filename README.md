@@ -18,8 +18,8 @@
   (2) "01.Scripts/Map/PlaneGeneration"    
     
   
-디폴트맵 생성 :    
-(startPos == Vector3.zero) => 맵 생성  (생성된 타일 좌표를 Key와 Value로 저장(GameManager의 Dictionary<String, Vector3>)    
+디폴트 맵 생성 :    
+맵 생성  (생성된 타일 좌표를 Key와 Value로 저장(GameManager의 Dictionary<String, Vector3>)    
 맵크기 = radius * 2    
 맵프리팹 = MeshGenerator사용    
 
