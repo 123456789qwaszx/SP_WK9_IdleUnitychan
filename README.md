@@ -77,6 +77,5 @@ SpawningPool.Instance._bearCount -= 1;
  - 적 LockOn (타겟 고정 및 방향고정) // 구현
  - 적에게 이동 // 구현(임시)
  - 거리가 가까울 시 공격 // 구현
- - 적 사망 시 콜백 받아서 Dictionary.Clear() // 미구현
- - PlayerBehavior.FindEnemy()
+ - 적 사망 시 콜백 받아서 Dictionary.Clear(), PlayerBehavior.FindEnemy() // 미구현
  - 없으면 다음 장소 이동 // 미구현
