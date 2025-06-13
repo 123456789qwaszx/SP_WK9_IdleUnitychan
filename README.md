@@ -15,11 +15,11 @@
 - 기능_1. 무한맵, 맵생성시 오브젝트 랜덤배치    
   -담당 클래스 :    
   (1) "01.Scripts/Map/MeshGenerator"    
-  (2)"01.Scripts/Map/PlaneGeneration"    
+  (2) "01.Scripts/Map/PlaneGeneration"    
     
   
 디폴트맵 생성 :    
-if(startPos == Vector3.zero) => 맵 생성  (생성된 타일 좌표를 Key로 저장(GameManager의 Dictionary)    
+(startPos == Vector3.zero) => 맵 생성  (생성된 타일 좌표를 Key와 Value로 저장(GameManager의 Dictionary<String, Vector3>)    
 맵크기 = radius * 2    
 맵프리팹 = MeshGenerator사용    
 
@@ -43,9 +43,8 @@ Axe.OnTriggerEnter (Collider ==  몬스터) => CheckDamage(Collider)
 ->    
 데미지 계수 설정 :    
 Collider.GetComponent<Damageable>()    
-Damageable.DamageMessage data;    
+Damageable.DamageMessage data;    //Struct DamageMessage{int amount}
 data.amount = (Axe._damage);    
-data.damager = Axe this;    
 collider.ApplyDamage(data);    
 ->    
 데미지 적용 :    
